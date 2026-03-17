@@ -1,0 +1,338 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Promotion Relay (v2)",
+    "description": "Promotion service relay",
+    "license": {
+      "name": "Anheuser-Busch InBev © 2021"
+    },
+    "version": "1.0.2-SNAPSHOT"
+  },
+  "servers": [
+    {
+      "url": "https://services-dev.bees-platform.dev/api/promotion-relay/v2",
+      "description": "dev"
+    },
+    {
+      "url": "https://services-uat.bees-platform.dev/api/promotion-relay/v2",
+      "description": "uat"
+    },
+    {
+      "url": "https://services-sit.bees-platform.dev/api/promotion-relay/v2",
+      "description": "sit"
+    }
+  ],
+  "security": [
+    {
+      "basicAuth": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "Promotion Relay V2",
+      "description": "Promotion Account Controller"
+    }
+  ],
+  "paths": {
+    "": {
+      "post": {
+        "summary": "Promotion Creation/Update",
+        "description": "Create or update a list of promotions. This request is asynchronous and it will be placed upon a queue for a post processor consumption.",
+        "operationId": "createPromotionsUsingPOST_1",
+        "parameters": [
+          {
+            "name": "x-timestamp",
+            "in": "header",
+            "description": "Timestamp generated in the source of truth of the data that will be used for setting precedence of message processing. This count starts at the Unix Epoch on January 1st, 1970 at UTC",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "content-encoding",
+            "in": "header",
+            "description": "Its value indicates which encodings were applied to the entity-body",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "country",
+            "in": "header",
+            "description": "Country/region. ISO 3166 alpha-2 country code",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "requestTraceId",
+            "in": "header",
+            "description": "Cross transaction unique ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Request body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/PromotionAccount"
+                }
+              },
+              "examples": {
+                "example-1": {
+                  "value": [
+                    {
+                      "budget": 0,
+                      "description": "Buy 10, get 12 - Buy 12, get 16” or discounts \"10% off for all beers\".",
+                      "endDate": "2050-03-31T23:59:59.999Z",
+                      "image": "https://www.socioscerveceria.com.do/media/catalog/product//b/a/barcelo_dark_series_350_ml_-_unidad_1_botella_dar_siri_.png",
+                      "promotionId": "Becks01",
+                      "quantityLimit": 10,
+                      "startDate": "2020-01-01T00:00:00.000Z",
+                      "title": "Buy 3 get 1 free",
+                      "type": "STEPPED_DISCOUNT"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Ok.",
+            "content": {}
+          },
+          "202": {
+            "description": "Accepted",
+            "content": {}
+          },
+          "400": {
+            "description": "The request is invalid.",
+            "content": {}
+          },
+          "401": {
+            "description": "You are not authorized to view the resource.",
+            "content": {}
+          },
+          "503": {
+            "description": "Service Unavailable. This error can be a result of queue infrastructure not available. In this case, nothing will be processed.",
+            "content": {}
+          }
+        },
+        "x-codegen-request-body-name": "promotionAccountRequest"
+      },
+      "delete": {
+        "summary": "Promotions Accounts Deletion",
+        "description": "Delete promotions x accounts",
+        "operationId": "deletePromotionAccountUsingDELETE",
+        "parameters": [
+          {
+            "name": "country",
+            "in": "header",
+            "description": "Country/region. ISO 3166 alpha-2 country code",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-timestamp",
+            "in": "header",
+            "description": "Timestamp generated in the source of truth of the data that will be used for setting precedence of message processing. This count starts at the Unix Epoch on January 1st, 1970 at UTC",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "requestTraceId",
+            "in": "header",
+            "description": "Cross transaction unique ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Request body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PromotionDeleteRequest"
+              },
+              "examples": {
+                "example-1": {
+                  "value": {
+                    "accounts": [
+                      "string"
+                    ],
+                    "promotions": [
+                      "string"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "description": "Accepted",
+            "content": {}
+          },
+          "400": {
+            "description": "The request is invalid.",
+            "content": {}
+          },
+          "401": {
+            "description": "You are not authorized to view the resource.",
+            "content": {}
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {}
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {}
+          },
+          "503": {
+            "description": "Service Unavailable. This error can be a result of queue infrastructure not available. In this case, nothing will be processed.",
+            "content": {}
+          }
+        },
+        "x-codegen-request-body-name": "promotionDeleteRequest"
+      },
+      "parameters": []
+    }
+  },
+  "components": {
+    "schemas": {
+      "PromotionAccount": {
+        "title": "PromotionAccount",
+        "required": [
+          "startDate",
+          "title",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "budget": {
+            "minimum": 0,
+            "exclusiveMinimum": false,
+            "type": "number",
+            "description": "The promotion budget."
+          },
+          "description": {
+            "maxLength": 20000,
+            "minLength": 0,
+            "type": "string",
+            "description": "The complete description of the promotion. It describes the promotion itself, about how the promotion works.",
+            "example": "Buy 10, get 12 - Buy 12, get 16” or discounts \"10% off for all beers\"."
+          },
+          "endDate": {
+            "type": "string",
+            "description": "Promotion deactivation date. Needs to be > than startDate. It should be in UTC timezone. https://en.wikipedia.org/wiki/ISO_8601",
+            "example": "2050-03-31T23:59:59.999Z"
+          },
+          "image": {
+            "type": "string",
+            "description": "Image used as background of the promotion.",
+            "example": "https://www.socioscerveceria.com.do/media/catalog/product//b/a/barcelo_dark_series_350_ml_-_unidad_1_botella_dar_siri_.png"
+          },
+          "promotionId": {
+            "type": "string",
+            "description": "Unique identifier for the promotion. Required.",
+            "example": "Becks01"
+          },
+          "quantityLimit": {
+            "minimum": 1,
+            "exclusiveMinimum": false,
+            "type": "integer",
+            "description": "The promotion quantity limit.",
+            "format": "int32",
+            "example": 10
+          },
+          "startDate": {
+            "type": "string",
+            "description": "Promotion activation date. It should be in UTC timezone. https://en.wikipedia.org/wiki/ISO_8601",
+            "example": "2020-01-01T00:00:00.000Z"
+          },
+          "title": {
+            "maxLength": 255,
+            "minLength": 1,
+            "type": "string",
+            "description": "The promotion title. The label displayed on the promotion list.",
+            "example": "Buy 3 get 1 free"
+          },
+          "type": {
+            "type": "string",
+            "description": "The promotion type that can be one of the following: DISCOUNT, FREE_GOOD, STEPPED_DISCOUNT, STEPPED_FREE_GOOD and FLEXIBLE_DISCOUNT.",
+            "example": "STEPPED_DISCOUNT",
+            "enum": [
+              "STEPPED_DISCOUNT",
+              "STEPPED_FREE_GOOD",
+              "DISCOUNT",
+              "FREE_GOOD",
+              "FLEXIBLE_DISCOUNT"
+            ]
+          }
+        }
+      },
+      "PromotionDeleteRequest": {
+        "title": "PromotionDeleteRequest",
+        "type": "object",
+        "x-examples": {
+          "example-1": {
+            "accounts": [
+              "string"
+            ],
+            "promotions": [
+              "string"
+            ]
+          }
+        },
+        "properties": {
+          "accounts": {
+            "type": "array",
+            "description": "AccountId list.",
+            "deprecated": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          "promotions": {
+            "type": "array",
+            "description": "PromotionId list.",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "promotions"
+        ]
+      }
+    },
+    "securitySchemes": {
+      "basicAuth": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    }
+  }
+}
