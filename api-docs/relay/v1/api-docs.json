@@ -1,0 +1,915 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Promotion Relay (v1)",
+    "description": "Promotion service relay",
+    "license": {
+      "name": "Anheuser-Busch InBev © 2021"
+    },
+    "version": "1.0.1-SNAPSHOT"
+  },
+  "servers": [
+    {
+      "url": "https://services-dev.bees-platform.dev/api/promotion-relay/",
+      "description": "dev"
+    },
+    {
+      "url": "https://services-uat.bees-platform.dev/api/promotion-relay/",
+      "description": "uat"
+    },
+    {
+      "url": "https://services-sit.bees-platform.dev/api/promotion-relay/",
+      "description": "sit"
+    }
+  ],
+  "security": [
+    {
+      "basicAuth": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "Deprecated"
+    },
+    {
+      "name": "Promotion Relay V1"
+    }
+  ],
+  "paths": {
+    "/v1": {
+      "post": {
+        "tags": [
+          "Deprecated"
+        ],
+        "summary": "Promotion Creation/Update",
+        "description": "Create or update a list of promotions. This request is asynchronous and it will be placed upon a queue for a post processor consumption.\nDeprecated since: Sprint 53 - 01/2021 - BEESCS-4928\nRemoval prevision: undefined",
+        "operationId": "createPromotionsUsingPOST",
+        "parameters": [
+          {
+            "name": "x-timestamp",
+            "in": "header",
+            "description": "Timestamp generated in the source of truth of the data that will be used for setting precedence of message processing. This count starts at the Unix Epoch on January 1st, 1970 at UTC",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "requestTraceId",
+            "in": "header",
+            "description": "Cross transaction unique ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "country",
+            "in": "header",
+            "description": "Country/region. ISO 3166 alpha-2 country code",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "promotionRequest",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Promotion"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "description": "Accepted.",
+            "content": {}
+          },
+          "400": {
+            "description": "The request is invalid.",
+            "content": {}
+          },
+          "401": {
+            "description": "You are not authorized to view the resource.",
+            "content": {}
+          },
+          "503": {
+            "description": "Service Unavailable. This error can be a result of queue infrastructure not available. In this case, nothing will be processed.",
+            "content": {}
+          }
+        },
+        "deprecated": true,
+        "x-codegen-request-body-name": "promotionRequest"
+      }
+    },
+    "/v1/account-group": {
+      "post": {
+        "tags": [
+          "Deprecated"
+        ],
+        "summary": "Promotion Account Group Creation/Update",
+        "description": "Create or update a list of Account Groups. This request is asynchronous and it will be placed upon a queue for a post processor consumption.\nDeprecated since: Sprint 53 - 01/2021 - BEESCS-4928\nRemoval prevision: undefined",
+        "operationId": "createAccountGroupPromotionsUsingPOST",
+        "parameters": [
+          {
+            "name": "x-timestamp",
+            "in": "header",
+            "description": "Timestamp generated in the source of truth of the data that will be used for setting precedence of message processing. This count starts at the Unix Epoch on January 1st, 1970 at UTC",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "requestTraceId",
+            "in": "header",
+            "description": "Cross transaction unique ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "country",
+            "in": "header",
+            "description": "Country/region. ISO 3166 alpha-2 country code",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "accountGroupRequest",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/PromotionAccountGroup"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "description": "Accepted.",
+            "content": {}
+          },
+          "400": {
+            "description": "The request is invalid.",
+            "content": {}
+          },
+          "401": {
+            "description": "You are not authorized to view the resource.",
+            "content": {}
+          },
+          "503": {
+            "description": "Service Unavailable. This error can be a result of queue infrastructure not available. In this case, nothing will be processed.",
+            "content": {}
+          }
+        },
+        "deprecated": true,
+        "x-codegen-request-body-name": "accountGroupRequest"
+      }
+    },
+    "/v1/account-group/{accountGroupId}": {
+      "delete": {
+        "tags": [
+          "Deprecated"
+        ],
+        "summary": "Delete Promotion Account Group",
+        "description": "Delete a informed Promotion Account Group.\nDeprecated since: Sprint 53 - 01/2021 - BEESCS-4928\nRemoval prevision: undefined",
+        "operationId": "deletePromotionAccountGroupUsingDELETE",
+        "parameters": [
+          {
+            "name": "accountGroupId",
+            "in": "path",
+            "description": "Promotion Account Group unique identifier",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-timestamp",
+            "in": "header",
+            "description": "Timestamp generated in the source of truth of the data that will be used for setting precedence of message processing. This count starts at the Unix Epoch on January 1st, 1970 at UTC",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "requestTraceId",
+            "in": "header",
+            "description": "Cross transaction unique ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "country",
+            "in": "header",
+            "description": "Country/region. ISO 3166 alpha-2 country code",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Accepted",
+            "content": {}
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {}
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {}
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {}
+          }
+        },
+        "deprecated": true
+      }
+    },
+    "/v1/accounts/score": {
+      "put": {
+        "tags": [
+          "Deprecated"
+        ],
+        "summary": "Promotion Score update by account",
+        "description": "Update promotion score for a list of promotions grouped by account. This request is asynchronous and it will be placed upon a queue for a post processor consumption.\nDeprecated since: Sprint 53 - 01/2021 - BEESCS-4928\nRemoval prevision: undefined",
+        "operationId": "updatePromotionScoreUsingPUT",
+        "parameters": [
+          {
+            "name": "x-timestamp",
+            "in": "header",
+            "description": "Timestamp generated in the source of truth of the data that will be used for setting precedence of message processing. This count starts at the Unix Epoch on January 1st, 1970 at UTC",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "requestTraceId",
+            "in": "header",
+            "description": "Cross transaction unique ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "country",
+            "in": "header",
+            "description": "Country/region. ISO 3166 alpha-2 country code",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "promotionScoreRequest",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/PromotionScoreByAccount"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "description": "Accepted.",
+            "content": {}
+          },
+          "400": {
+            "description": "The request is invalid.",
+            "content": {}
+          },
+          "401": {
+            "description": "You are not authorized to view the resource.",
+            "content": {}
+          },
+          "503": {
+            "description": "Service Unavailable. This error can be a result of queue infrastructure not available. In this case, nothing will be processed.",
+            "content": {}
+          }
+        },
+        "deprecated": true,
+        "x-codegen-request-body-name": "promotionScoreRequest"
+      }
+    },
+    "/v1/free-good-group": {
+      "post": {
+        "tags": [
+          "Deprecated"
+        ],
+        "summary": "Promotion Free Good Group Creation/Update",
+        "description": "Create or update a list of Free Good Groups. This request is asynchronous and it will be placed upon a queue for a post processor consumption.\nDeprecated since: Sprint 53 - 01/2021 - BEESCS-4928\nRemoval prevision: undefined",
+        "operationId": "createFreeGoodGroupPromotionsUsingPOST",
+        "parameters": [
+          {
+            "name": "x-timestamp",
+            "in": "header",
+            "description": "Timestamp generated in the source of truth of the data that will be used for setting precedence of message processing. This count starts at the Unix Epoch on January 1st, 1970 at UTC",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "requestTraceId",
+            "in": "header",
+            "description": "Cross transaction unique ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "country",
+            "in": "header",
+            "description": "Country/region. ISO 3166 alpha-2 country code",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "freeGoodGroupRequest",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/PromotionFreeGoodGroup"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "description": "Accepted.",
+            "content": {}
+          },
+          "400": {
+            "description": "The request is invalid.",
+            "content": {}
+          },
+          "401": {
+            "description": "You are not authorized to view the resource.",
+            "content": {}
+          },
+          "503": {
+            "description": "Service Unavailable. This error can be a result of queue infrastructure not available. In this case, nothing will be processed.",
+            "content": {}
+          }
+        },
+        "deprecated": true,
+        "x-codegen-request-body-name": "freeGoodGroupRequest"
+      }
+    },
+    "/v1/free-good-group/{freeGoodGroupId}": {
+      "delete": {
+        "tags": [
+          "Deprecated"
+        ],
+        "summary": "Delete Promotion Free Good Group",
+        "description": "Delete a informed Promotion Free Good Group.\nDeprecated since: Sprint 53 - 01/2021 - BEESCS-4928\nRemoval prevision: undefined",
+        "operationId": "deletePromotionFreeGoodGroupUsingDELETE",
+        "parameters": [
+          {
+            "name": "freeGoodGroupId",
+            "in": "path",
+            "description": "Promotion Free Good Group unique identifier",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-timestamp",
+            "in": "header",
+            "description": "Timestamp generated in the source of truth of the data that will be used for setting precedence of message processing. This count starts at the Unix Epoch on January 1st, 1970 at UTC",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "requestTraceId",
+            "in": "header",
+            "description": "Cross transaction unique ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "country",
+            "in": "header",
+            "description": "Country/region. ISO 3166 alpha-2 country code",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Accepted",
+            "content": {}
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {}
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {}
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {}
+          }
+        },
+        "deprecated": true
+      }
+    },
+    "/v1/sku-group": {
+      "post": {
+        "tags": [
+          "Deprecated"
+        ],
+        "summary": "Promotion Sku Group Creation/Update",
+        "description": "Create or update a list of Sku Groups. This request is asynchronous and it will be placed upon a queue for a post processor consumption.\nDeprecated since: Sprint 53 - 01/2021 - BEESCS-4928\nRemoval prevision: undefined",
+        "operationId": "createSkuGroupPromotionsUsingPOST",
+        "parameters": [
+          {
+            "name": "x-timestamp",
+            "in": "header",
+            "description": "Timestamp generated in the source of truth of the data that will be used for setting precedence of message processing. This count starts at the Unix Epoch on January 1st, 1970 at UTC",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "requestTraceId",
+            "in": "header",
+            "description": "Cross transaction unique ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "country",
+            "in": "header",
+            "description": "Country/region. ISO 3166 alpha-2 country code",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "skuGroupRequest",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/PromotionSkuGroup"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "description": "Accepted.",
+            "content": {}
+          },
+          "400": {
+            "description": "The request is invalid.",
+            "content": {}
+          },
+          "401": {
+            "description": "You are not authorized to view the resource.",
+            "content": {}
+          },
+          "503": {
+            "description": "Service Unavailable. This error can be a result of queue infrastructure not available. In this case, nothing will be processed.",
+            "content": {}
+          }
+        },
+        "deprecated": true,
+        "x-codegen-request-body-name": "skuGroupRequest"
+      }
+    },
+    "/v1/sku-group/{skuGroupId}": {
+      "delete": {
+        "tags": [
+          "Deprecated"
+        ],
+        "summary": "Delete Promotion Sku Group",
+        "description": "Delete a informed Promotion Sku Group.\nDeprecated since: Sprint 53 - 01/2021 - BEESCS-4928\nRemoval prevision: undefined",
+        "operationId": "deletePromotionSkuGroupUsingDELETE",
+        "parameters": [
+          {
+            "name": "skuGroupId",
+            "in": "path",
+            "description": "Promotion Sku Group unique identifier",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-timestamp",
+            "in": "header",
+            "description": "Timestamp generated in the source of truth of the data that will be used for setting precedence of message processing. This count starts at the Unix Epoch on January 1st, 1970 at UTC",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "requestTraceId",
+            "in": "header",
+            "description": "Cross transaction unique ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "country",
+            "in": "header",
+            "description": "Country/region. ISO 3166 alpha-2 country code",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Accepted",
+            "content": {}
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {}
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {}
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {}
+          }
+        },
+        "deprecated": true
+      }
+    },
+    "/v1/{promotionId}": {
+      "delete": {
+        "tags": [
+          "Deprecated"
+        ],
+        "summary": "Promotion Deletion",
+        "description": "Deletes a promotion\nDeprecated since: Sprint 53 - 01/2021 - BEESCS-4928\nRemoval prevision: undefined",
+        "operationId": "deletePromotionUsingDELETE",
+        "parameters": [
+          {
+            "name": "promotionId",
+            "in": "path",
+            "description": "Promotion unique identifier",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-timestamp",
+            "in": "header",
+            "description": "Timestamp generated in the source of truth of the data that will be used for setting precedence of message processing. This count starts at the Unix Epoch on January 1st, 1970 at UTC",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "requestTraceId",
+            "in": "header",
+            "description": "Cross transaction unique ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "country",
+            "in": "header",
+            "description": "Country/region. ISO 3166 alpha-2 country code",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Accepted",
+            "content": {}
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {}
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {}
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {}
+          }
+        },
+        "deprecated": true
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Promotion": {
+        "title": "Promotion",
+        "required": [
+          "accountGroupIds",
+          "budget",
+          "description",
+          "id",
+          "score",
+          "skuGroupIds",
+          "title",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "accountGroupIds": {
+            "type": "array",
+            "description": "The account groups of this promotion. This will link an account group to this promotion. With this information the middleware can identify for which accounts this promotion is available.",
+            "example": [
+              "12345",
+              "54321"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "budget": {
+            "type": "number",
+            "description": "The promotion budget"
+          },
+          "description": {
+            "maxLength": 20000,
+            "minLength": 0,
+            "type": "string",
+            "description": "The complete description of the promotion. It describes the promotion itself, about how the promotion works.",
+            "example": "Buy 10, get 12 - Buy 12, get 16” or discounts \"10% off for all beers\"."
+          },
+          "endDate": {
+            "type": "string",
+            "description": "Day until which the promotion will become active. Needs to be > than Start date. It should be in UTC timezone. https://en.wikipedia.org/wiki/ISO_8601",
+            "example": "2019-03-31T23:59:59.999Z"
+          },
+          "freeGoodGroupIds": {
+            "type": "array",
+            "description": "The free good groups of this promotion. This will link this promotion to the sku’s that will be free goodies when affected by this promotion. This field is required when promotion type is FREE_GOOD or STEPPED_FREE_GOOD.",
+            "example": [
+              "12345",
+              "54321"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "hidden": {
+            "type": "boolean",
+            "description": "Define if the promotion will be available",
+            "example": false
+          },
+          "id": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "description": "Unique identifier for the promotion.",
+            "example": "1"
+          },
+          "promotionId": {
+            "type": "string",
+            "description": "Promotion Id.",
+            "example": "Becks01"
+          },
+          "promotionsRanking": {
+            "maximum": 100,
+            "exclusiveMaximum": false,
+            "minimum": 1,
+            "exclusiveMinimum": false,
+            "type": "integer",
+            "description": "The ranking of this promotion. This will link a ranking to this promotion. with this information the middleware can identity the ranking position of this promotion.",
+            "format": "int32",
+            "example": 100
+          },
+          "quantityLimit": {
+            "type": "integer",
+            "description": "Quantity Limit of freegoods ",
+            "format": "int32",
+            "example": 2
+          },
+          "score": {
+            "type": "number",
+            "description": "The promotion score. This decimal value represents a rank value for promotion on sort order"
+          },
+          "skuGroupIds": {
+            "type": "array",
+            "description": "The sku groups of this promotion. This will link this promotion to the sku's affected by this promotion. with this information the middleware can identity with sku's this promotion have.",
+            "example": [
+              "12345",
+              "54321"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "startDate": {
+            "type": "string",
+            "description": "Day as of which the promotion will become active. It should be in UTC timezone. https://en.wikipedia.org/wiki/ISO_8601",
+            "example": "2019-03-04T00:00:00.000Z"
+          },
+          "title": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "description": "The promotion title. The label displayed on the promotion list.",
+            "example": "Buy 3 get 1 free"
+          },
+          "type": {
+            "type": "string",
+            "description": "The promotion type that can be one of the following: DISCOUNT, FREE_GOOD, STEPPED_DISCOUNT, STEPPED_FREE_GOOD and FLEXIBLE_DISCOUNT.",
+            "example": "STEPPED_DISCOUNT",
+            "enum": [
+              "STEPPED_DISCOUNT",
+              "STEPPED_FREE_GOOD",
+              "DISCOUNT",
+              "FREE_GOOD",
+              "FLEXIBLE_DISCOUNT"
+            ]
+          }
+        }
+      },
+      "PromotionAccountGroup": {
+        "title": "PromotionAccountGroup",
+        "required": [
+          "accountGroupId",
+          "accounts"
+        ],
+        "type": "object",
+        "properties": {
+          "accountGroupId": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "description": "The account group ID. This ID will be used to link the account given to a promotion with this account group."
+          },
+          "accounts": {
+            "type": "array",
+            "example": [
+              "11111",
+              "222222",
+              "333333"
+            ],
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "PromotionFreeGoodGroup": {
+        "title": "PromotionFreeGoodGroup",
+        "required": [
+          "freeGoodGroupId",
+          "skus"
+        ],
+        "type": "object",
+        "properties": {
+          "freeGoodGroupId": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "description": "The free good group ID. This ID will be used to link the sku to be available as a free good to a promotion with this free good group."
+          },
+          "skus": {
+            "type": "array",
+            "example": [
+              "SKU001",
+              "SKU002",
+              "SKU003"
+            ],
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "PromotionScore": {
+        "title": "PromotionScore",
+        "required": [
+          "promotionId",
+          "score"
+        ],
+        "type": "object",
+        "properties": {
+          "promotionId": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "description": "Promotion ID."
+          },
+          "score": {
+            "type": "number",
+            "description": "The promotion score, integer value that represents a rank value for sorting."
+          }
+        }
+      },
+      "PromotionScoreByAccount": {
+        "title": "PromotionScoreByAccount",
+        "required": [
+          "accountId",
+          "promotions"
+        ],
+        "type": "object",
+        "properties": {
+          "accountId": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "description": "The account ID. This ID will be used to link the promotion score with a specific account."
+          },
+          "promotions": {
+            "type": "array",
+            "description": "The list of promotion score. This will link the account id to those promotions.",
+            "items": {
+              "$ref": "#/components/schemas/PromotionScore"
+            }
+          }
+        }
+      },
+      "PromotionSkuGroup": {
+        "title": "PromotionSkuGroup",
+        "required": [
+          "skuGroupId",
+          "skus"
+        ],
+        "type": "object",
+        "properties": {
+          "skuGroupId": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "description": "The sku group ID. This ID will be used to link the sku provided to a promotion with this sku group."
+          },
+          "skus": {
+            "type": "array",
+            "example": [
+              "SKU001",
+              "SKU002",
+              "SKU003"
+            ],
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "basicAuth": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    }
+  }
+}
