@@ -1,0 +1,442 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Promotion Relay Multi-Vendor (v3)",
+    "description": "Promotion service relay",
+    "license": {
+      "name": "Anheuser-Busch InBev © 2021"
+    },
+    "version": "1.0.3-SNAPSHOT"
+  },
+  "servers": [
+    {
+      "url": "https://services-dev.bees-platform.dev/api/promotion-relay/v3",
+      "description": "dev"
+    },
+    {
+      "url": "https://services-uat.bees-platform.dev/api/promotion-relay/v3",
+      "description": "uat"
+    },
+    {
+      "url": "https://services-sit.bees-platform.dev/api/promotion-relay/v3",
+      "description": "sit"
+    }
+  ],
+  "security": [
+    {
+      "VendorBearerAuth": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "Promotion Relay V3"
+    }
+  ],
+  "paths": {
+    "/promotions": {
+      "post": {
+        "summary": "POST /promotions",
+        "operationId": "post-promotions",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "description": "",
+                "minItems": 1,
+                "uniqueItems": true,
+                "items": {
+                  "$ref": "#/components/schemas/PromotionMultivendor"
+                }
+              },
+              "examples": {
+                "Default": {
+                  "value": [
+                    {
+                      "vendorPromotionId": "P123456789",
+                      "title": "Promotion title!",
+                      "description": "Promotion description.",
+                      "type": "DISCOUNT",
+                      "startDate": "2019-08-24T14:15:22Z",
+                      "endDate": "2019-08-24T14:15:22Z",
+                      "image": "http://example.com",
+                      "budget": 10,
+                      "quantityLimit": 150
+                    }
+                  ]
+                },
+                "I18n": {
+                  "value": [
+                    {
+                      "vendorPromotionId": "promo12345",
+                      "title": "Promotion title!",
+                      "description": "Promotion description.",
+                      "type": "DISCOUNT",
+                      "startDate": "2019-08-24T14:15:22Z",
+                      "endDate": "2019-08-24T14:15:22Z",
+                      "image": "http://example.com",
+                      "budget": 0,
+                      "quantityLimit": 0,
+                      "translations": {
+                        "fr-CA": {
+                          "title": "Promo title for the locale",
+                          "description": "Promo description for the locale",
+                          "image": "Promo image for the locale"
+                        }
+                      },
+                      "defaultLanguage": "en-CA"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "description": "Create or update a list of promotions. This request is asynchronous and it will be placed upon a queue for a post processor consumption.",
+        "security": [
+          {
+            "VendorBearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "country",
+            "description": "Country/region. ISO 3166 alpha-2 country code",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "x-timestamp",
+            "description": "Timestamp generated in the source of truth of the data that will be used for setting precedence of message processing. This count starts at the Unix Epoch on January 1st, 1970 at UTC",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "requestTraceId",
+            "description": "Cross transaction unique ID",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string",
+              "default": "application/json"
+            },
+            "in": "header",
+            "name": "Content-Type"
+          }
+        ],
+        "tags": [
+          "V3 - Multi-Vendor"
+        ]
+      },
+      "delete": {
+        "summary": "DELETE /promotions",
+        "operationId": "delete-promotions",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PromotionMultivendorDelete"
+              },
+              "examples": {
+                "example-1": {
+                  "value": {
+                    "vendorPromotionIds": [
+                      "B12346"
+                    ],
+                    "vendorAccountIds": [
+                      "9876543210"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "description": ""
+        },
+        "description": "Delete promotions by vendorPromotionId and/or vendorAccountId",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "country",
+            "required": true,
+            "description": "Country/region. ISO 3166 alpha-2 country code"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "x-timestamp",
+            "required": true,
+            "description": "Timestamp generated in the source of truth of the data that will be used for setting precedence of message processing. This count starts at the Unix Epoch on January 1st, 1970 at UTC"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "requestTraceId",
+            "required": true,
+            "description": "Cross transaction unique ID"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "default": "application/json"
+            },
+            "in": "header",
+            "name": "Content-Type"
+          }
+        ],
+        "security": [
+          {
+            "VendorBearerAuth": []
+          }
+        ],
+        "tags": [
+          "V3 - Multi-Vendor"
+        ]
+      },
+      "parameters": []
+    }
+  },
+  "components": {
+    "schemas": {
+      "PromotionMultivendor": {
+        "description": "",
+        "type": "object",
+        "x-examples": {
+          "example-1": {
+            "value": {
+              "vendorPromotionId": "promo12345",
+              "title": "Promotion title!",
+              "description": "Promotion description.",
+              "type": "DISCOUNT",
+              "startDate": "2019-08-24T14:15:22Z",
+              "endDate": "2019-08-24T14:15:22Z",
+              "image": "http://example.com",
+              "budget": 0,
+              "quantityLimit": 0,
+              "translations": {
+                "en_US": {
+                  "title": "string",
+                  "description": "string",
+                  "image": "string"
+                },
+                "en_CA": {
+                  "title": "string",
+                  "description": "string",
+                  "image": "string"
+                }
+              }
+            }
+          }
+        },
+        "title": "PromotionMultivendor",
+        "properties": {
+          "vendorPromotionId": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Unique identifier for the promotion.",
+            "example": "promo12345"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The promotion title. The label displayed on the promotion list.",
+            "example": "Promotion title!"
+          },
+          "description": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The complete description of the promotion. It describes the promotion itself, about how the promotion works.",
+            "example": "Promotion description."
+          },
+          "type": {
+            "type": "string",
+            "minLength": 1,
+            "enum": [
+              "DISCOUNT",
+              "FREE_GOOD",
+              "STEPPED_DISCOUNT",
+              "STEPPED_FREE_GOOD and FLEXIBLE_DISCOUNT."
+            ],
+            "description": "The promotion type that can be one of the following: DISCOUNT, FREE_GOOD, STEPPED_DISCOUNT, STEPPED_FREE_GOOD and FLEXIBLE_DISCOUNT."
+          },
+          "startDate": {
+            "type": "string",
+            "minLength": 1,
+            "format": "date-time",
+            "description": "Promotion activation date. Needs to be < than endDate. It should be in UTC timezone. https://en.wikipedia.org/wiki/ISO_8601"
+          },
+          "endDate": {
+            "type": "string",
+            "minLength": 1,
+            "format": "date-time",
+            "description": "Promotion deactivation date. Needs to be > than startDate. It should be in UTC timezone. https://en.wikipedia.org/wiki/ISO_8601"
+          },
+          "image": {
+            "type": "string",
+            "minLength": 1,
+            "format": "uri",
+            "description": "Image used as background of the promotion."
+          },
+          "budget": {
+            "type": "number",
+            "description": "The promotion budget."
+          },
+          "quantityLimit": {
+            "type": "number",
+            "description": "The promotion quantity limit."
+          },
+          "translations": {
+            "$ref": "#/components/schemas/Localization"
+          },
+          "defaultLanguage": {
+            "type": "string",
+            "description": "Indicate the default language used to send the main data. It must be the locale standard (language-COUNTRY). More details about the locale on https://www.oracle.com/java/technologies/javase/jdk11-supported-locales.html",
+            "example": "en-CA"
+          }
+        },
+        "required": [
+          "vendorPromotionId",
+          "title",
+          "type",
+          "startDate",
+          "endDate"
+        ]
+      },
+      "PromotionMultivendorDelete": {
+        "description": "",
+        "type": "object",
+        "x-examples": {
+          "example-1": {
+            "value": {
+              "vendorPromotionIds": [
+                "string"
+              ],
+              "vendorAccountIds": [
+                "string"
+              ]
+            }
+          }
+        },
+        "title": "PromotionMultivendorDelete",
+        "properties": {
+          "vendorPromotionIds": {
+            "type": "array",
+            "description": "Vendor promotion id list.",
+            "items": {
+              "type": "string",
+              "example": "B12346"
+            }
+          },
+          "vendorAccountIds": {
+            "type": "array",
+            "description": "Vendor Account Id list.",
+            "deprecated": true,
+            "items": {
+              "type": "string",
+              "example": "9876543210"
+            }
+          }
+        },
+        "required": [
+          "vendorPromotionIds"
+        ]
+      },
+      "Localization": {
+        "description": "The translations for title, description and image. The key must be the locale (language-COUNTRY). More details about the locale on https://www.oracle.com/java/technologies/javase/jdk11-suported-locales.html",
+        "type": "object",
+        "x-examples": {
+          "example-1": {
+            "value": {
+              "en-US": {
+                "title": "Promo title for en-US",
+                "description": "Promo description for en-US",
+                "image": "Promo image for en-US"
+              },
+              "pr-BR": {
+                "title": "Promo title for pt-BR",
+                "description": "Promo description for pt-BR",
+                "image": "Promo image for pt-BR"
+              }
+            }
+          }
+        },
+        "title": "",
+        "properties": {
+          "[locale]": {
+            "type": "object",
+            "description": "",
+            "properties": {
+              "title": {
+                "type": "string",
+                "minLength": 1,
+                "description": "",
+                "example": "Promo title for the locale"
+              },
+              "description": {
+                "type": "string",
+                "minLength": 1,
+                "description": "",
+                "example": "Promo description for the locale"
+              },
+              "image": {
+                "type": "string",
+                "minLength": 1,
+                "example": "Promo image for the locale"
+              }
+            },
+            "required": [
+              "title"
+            ]
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "VendorBearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "Authorization code, vendorId information is mandatory inside the claims"
+      }
+    }
+  }
+}
