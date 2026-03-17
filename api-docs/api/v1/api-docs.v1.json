@@ -1,0 +1,1198 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Promotion Service V1",
+    "description": "\"REST API for AB-Inbev Promotion Service Microservice\"",
+    "license": {
+      "name": "Anheuser-Busch InBev © 2021"
+    },
+    "version": "1.0.1-SNAPSHOT"
+  },
+  "servers": [
+    {
+      "url": "https://services-dev.bees-platform.dev/api/promotion-service/",
+      "description": "dev"
+    },
+    {
+      "url": "https://services-uat.bees-platform.dev/api/promotion-service/",
+      "description": "uat"
+    },
+    {
+      "url": "https://services-sit.bees-platform.dev/api/promotion-service/",
+      "description": "sit"
+    }
+  ],
+  "security": [
+    {
+      "Authorization": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "Promotion Service API",
+      "description": "ABI B2B global promotion service."
+    }
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "tags": [
+          "Single-Vendor"
+        ],
+        "summary": "Promotion Information",
+        "description": "Retrieves the promotion detailed information",
+        "operationId": "getPromotionsUsingGET",
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "query",
+            "description": "Point of consumption unique identifier",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "updatedSince",
+            "in": "query",
+            "description": "A filter to retrieve just promotions that were updated after provided date",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "Page size",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 50
+            }
+          },
+          {
+            "name": "includeDisabled",
+            "in": "query",
+            "description": "Include disabled promotions",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
+            "name": "requestTraceId",
+            "in": "header",
+            "description": "Cross transaction unique ID. Used to track the request across systems",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "country",
+            "in": "header",
+            "description": "Country/region. ISO 3166 alpha-2 country code",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "schema": {
+              "type": "array",
+              "enum": [
+                "STEPPED_DISCOUNT",
+                "STEPPED_FREE_GOOD",
+                "DISCOUNT",
+                "FREE_GOOD",
+                "FLEXIBLE_DISCOUNT"
+              ]
+            },
+            "in": "query",
+            "name": "types",
+            "description": "A filter to retrieve just promotions with specific types"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "sku",
+            "description": "A filter to retrieve just promotions with specific sku"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetAllPromotionsResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {}
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {}
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {}
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/accounts": {
+      "get": {
+        "tags": [
+          "Single-Vendor"
+        ],
+        "summary": "Promotion Information grouped by account",
+        "description": "Retrieves the promotion detailed information grouped by account",
+        "operationId": "getPromotionsByAccountUsingGET",
+        "parameters": [
+          {
+            "name": "accounts",
+            "in": "query",
+            "description": "List of accounts",
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "updatedSince",
+            "in": "query",
+            "description": "A filter to retrieve just promotions that were updated after provided date",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "Page size",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 50
+            }
+          },
+          {
+            "name": "includeDisabled",
+            "in": "query",
+            "description": "Include disabled promotions",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
+            "name": "requestTraceId",
+            "in": "header",
+            "description": "Cross transaction unique ID. Used to track the request across systems",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "country",
+            "in": "header",
+            "description": "Country/region. ISO 3166 alpha-2 country code",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetPromotionsGroupedByAccountVO"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {}
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {}
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {}
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {}
+          }
+        },
+        "deprecated": true
+      }
+    },
+    "/{accountId}/{promotionId}": {
+      "get": {
+        "tags": [
+          "Single-Vendor"
+        ],
+        "summary": "Promotion Information filtered by accountId and promotionId",
+        "description": "Retrieves promotion detailed information filtered by accountId and promotionId",
+        "operationId": "getByAccountIdAndPromotionIdUsingGET",
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "path",
+            "description": "Account unique identifier",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "promotionId",
+            "in": "path",
+            "description": "PromotionId unique identifier",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "requestTraceId",
+            "in": "header",
+            "description": "Cross transaction unique ID. Used to track the request across systems",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "country",
+            "in": "header",
+            "description": "Country/region. ISO 3166 alpha-2 country code",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountPromotionVO"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {}
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {}
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {}
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {}
+          }
+        },
+        "deprecated": true
+      }
+    },
+    "/promotions": {
+      "get": {
+        "summary": "GET /promotions",
+        "tags": [
+          "Multi-Vendor"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "promotions": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/PromotionMultivendorResponse"
+                      }
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
+                  }
+                },
+                "examples": {
+                  "example-1": {
+                    "value": {
+                      "promotions": [
+                        {
+                          "vendorPromotionId": "PROMOTION001",
+                          "title": "Buy 3 get 1 free",
+                          "description": "Buy 10, get 12 - Buy 12, get 16 or discounts 10% off for all beers.",
+                          "type": "STEPPED_DISCOUNT",
+                          "budget": 100.5,
+                          "startDate": "2020-01-20T18:00:00.000Z",
+                          "endDate": "2020-01-20T18:00:00.000Z",
+                          "image": "http://example.com",
+                          "quantityLimit": 10,
+                          "vendorItemIds": [
+                            "12345",
+                            "54321"
+                          ],
+                          "updatedAt": "2020-01-20T18:00:00.000Z",
+                          "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08"
+                        }
+                      ],
+                      "pagination": {
+                        "page": 4,
+                        "size": 20,
+                        "totalPages": 5
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "operationId": "get-Promotions",
+        "description": "Retrieve a list of valid promotions.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "country",
+            "description": "Country/region. ISO 3166 alpha-2 country code.",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "requestTraceId",
+            "description": "Cross transaction unique ID. Used to track the request across systems.",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "vendorId",
+            "description": "Vendor Id to have the promotions returned.",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "vendorAccountId",
+            "description": "Vendor Account Id to have the promotions returned.",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "array",
+              "example": "vendorPromotionIds=VNPROMO123,VNPROMO456"
+            },
+            "in": "query",
+            "name": "vendorPromotionIds",
+            "description": "Vendor Promotion Ids to have the promotions returned."
+          },
+          {
+            "schema": {
+              "type": "array",
+              "example": "vendorItemIds=ITEM123,ITEM456"
+            },
+            "in": "query",
+            "name": "vendorItemIds",
+            "description": "Vendor Item Ids to have the promotions returned."
+          },
+          {
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 0,
+              "default": 0
+            },
+            "in": "query",
+            "name": "page",
+            "description": "Number of the current page being returned. The first page is number zero."
+          },
+          {
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1000
+            },
+            "in": "query",
+            "name": "pageSize",
+            "description": "Number of elements being returned per page."
+          },
+          {
+            "schema": {
+              "type": "array",
+              "enum": [
+                "STEPPED_DISCOUNT",
+                "STEPPED_FREE_GOOD",
+                "DISCOUNT",
+                "FREE_GOOD",
+                "FLEXIBLE_DISCOUNT"
+              ],
+              "example": "types=STEPPED_DISCOUNT, FLEXIBLE_DISCOUNT"
+            },
+            "in": "query",
+            "name": "types",
+            "description": "The types to have the promotions returned."
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "accept-language",
+            "description": "Information about the response language preferences (eg. en-US represents English as spoken in the United States). More details about the locale on https://www.oracle.com/java/technologies/javase/jdk11-suported-locales.html"
+          }
+        ]
+      },
+      "parameters": []
+    }
+  },
+  "components": {
+    "schemas": {
+      "AccountPromotionVO": {
+        "title": "AccountPromotionVO",
+        "type": "object",
+        "properties": {
+          "accountId": {
+            "type": "string",
+            "description": "Account ID from external Source.",
+            "example": "00001000004"
+          },
+          "budget": {
+            "type": "number",
+            "description": "Promotion budget.",
+            "example": 100.5
+          },
+          "description": {
+            "type": "string",
+            "description": "The complete description of the promotion. It describes the promotion itself, about how the promotion works.",
+            "example": "Buy 10, get 12 - Buy 12, get 16” or discounts \"10% off for all beers\"."
+          },
+          "endDate": {
+            "type": "string",
+            "description": "Promotion deactivation date.",
+            "example": "2020-01-20T18:00:00.000Z"
+          },
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the promotion.",
+            "example": "1"
+          },
+          "image": {
+            "type": "string",
+            "description": "Image used as background of the promotion.",
+            "example": "https://www.socioscerveceria.com.do/media/catalog/product//b/a/barcelo_dark_series_350_ml_-_unidad_1_botella_dar_siri_.png"
+          },
+          "internalId": {
+            "type": "string",
+            "description": "Internal ID from external Source.",
+            "example": "1"
+          },
+          "promotionId": {
+            "type": "string",
+            "description": "Promotion ID from external Source.",
+            "example": "PROMOTION001"
+          },
+          "promotionsRanking": {
+            "type": "integer",
+            "description": "Promotion ranking of the product.",
+            "format": "int32",
+            "example": 100
+          },
+          "quantityLimit": {
+            "type": "integer",
+            "description": "Integer of the consumption limit of the promotion.",
+            "format": "int32",
+            "example": 10
+          },
+          "score": {
+            "type": "number",
+            "description": "Promotion Score.",
+            "example": 100
+          },
+          "skus": {
+            "type": "array",
+            "description": "The list of sku ID that are part of the promotion.",
+            "example": [
+              "12345",
+              "54321"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "title": {
+            "type": "string",
+            "description": "The promotion title. The label displayed on the promotion list.",
+            "example": "Buy 3 get 1 free"
+          },
+          "type": {
+            "type": "string",
+            "description": "The type of the promotion.",
+            "example": "FLEXIBLE_DISCOUNT",
+            "enum": [
+              "STEPPED_DISCOUNT",
+              "STEPPED_FREE_GOOD",
+              "DISCOUNT",
+              "FREE_GOOD",
+              "FLEXIBLE_DISCOUNT"
+            ]
+          },
+          "updatedAt": {
+            "type": "string",
+            "description": "Date that the promotion was updated.",
+            "example": "2020-01-20T18:00:00.000Z"
+          }
+        }
+      },
+      "GetAllPromotionsResult": {
+        "title": "GetAllPromotionsResult",
+        "type": "object",
+        "properties": {
+          "pagination": {
+            "$ref": "#/components/schemas/Pagination"
+          },
+          "promotions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PromotionResponse"
+            }
+          }
+        }
+      },
+      "GetPromotionsGroupedByAccountVO": {
+        "title": "GetPromotionsGroupedByAccountVO",
+        "type": "object",
+        "properties": {
+          "accounts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PromotionResponseListByAccount"
+            }
+          },
+          "pagination": {
+            "$ref": "#/components/schemas/Pagination"
+          }
+        }
+      },
+      "Pagination": {
+        "title": "Pagination",
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "integer",
+            "description": "Current page number. The first page is zero.",
+            "format": "int32",
+            "example": 4
+          },
+          "size": {
+            "type": "integer",
+            "description": "Size of each page.",
+            "format": "int32",
+            "example": 20
+          },
+          "totalPages": {
+            "type": "integer",
+            "description": "Total number of pages.",
+            "format": "int32",
+            "example": 5
+          }
+        }
+      },
+      "PromotionAccountGroup": {
+        "title": "PromotionAccountGroup",
+        "required": [
+          "accountGroupId",
+          "accounts"
+        ],
+        "type": "object",
+        "properties": {
+          "accountGroupId": {
+            "type": "string",
+            "description": "The account group ID. This ID will be used to link the account given to a promotion with this account group."
+          },
+          "accounts": {
+            "type": "array",
+            "example": [
+              "11111",
+              "22222",
+              "33333"
+            ],
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "PromotionFreeGoodGroup": {
+        "title": "PromotionFreeGoodGroup",
+        "required": [
+          "freeGoodGroupId",
+          "skus"
+        ],
+        "type": "object",
+        "properties": {
+          "freeGoodGroupId": {
+            "type": "string",
+            "description": "The free good group ID. This ID will be used to link the sku to be available as a free good to a promotion with this free good group."
+          },
+          "skus": {
+            "type": "array",
+            "example": [
+              "SKU001",
+              "SKU002",
+              "SKU003"
+            ],
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "PromotionResponse": {
+        "title": "PromotionResponse",
+        "type": "object",
+        "properties": {
+          "budget": {
+            "type": "number",
+            "description": "Promotion budget.",
+            "example": 100.5
+          },
+          "description": {
+            "type": "string",
+            "description": "The complete description of the promotion. It describes the promotion itself, about how the promotion works.",
+            "example": "Buy 10, get 12 - Buy 12, get 16” or discounts \"10% off for all beers\"."
+          },
+          "endDate": {
+            "type": "string",
+            "description": "Promotion deactivation date.",
+            "example": "2020-01-20T18:00:00.000Z"
+          },
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the promotion.",
+            "example": "1"
+          },
+          "image": {
+            "type": "string",
+            "description": "Image used as background of the promotion.",
+            "example": "https://www.socioscerveceria.com.do/media/catalog/product//b/a/barcelo_dark_series_350_ml_-_unidad_1_botella_dar_siri_.png"
+          },
+          "internalId": {
+            "type": "string",
+            "description": "Internal ID from external Source.",
+            "example": "1"
+          },
+          "promotionId": {
+            "type": "string",
+            "description": "Promotion ID from external Source.",
+            "example": "PROMOTION001"
+          },
+          "promotionsRanking": {
+            "type": "integer",
+            "description": "Promotion ranking of the product.",
+            "format": "int32",
+            "example": 100
+          },
+          "quantityLimit": {
+            "type": "integer",
+            "description": "Integer of the consumption limit of the promotion.",
+            "format": "int32",
+            "example": 10
+          },
+          "score": {
+            "type": "number",
+            "description": "Promotion Score.",
+            "example": 100
+          },
+          "skus": {
+            "type": "array",
+            "description": "The list of sku ID that are part of the promotion.",
+            "example": [
+              "12345",
+              "54321"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "title": {
+            "type": "string",
+            "description": "The promotion title. The label displayed on the promotion list.",
+            "example": "Buy 3 get 1 free"
+          },
+          "type": {
+            "type": "string",
+            "description": "The type of the promotion.",
+            "example": "STEPPED_DISCOUNT",
+            "enum": [
+              "STEPPED_DISCOUNT",
+              "STEPPED_FREE_GOOD",
+              "DISCOUNT",
+              "FREE_GOOD",
+              "FLEXIBLE_DISCOUNT"
+            ]
+          },
+          "updatedAt": {
+            "type": "string",
+            "description": "Date that the promotion was updated.",
+            "example": "2020-01-20T18:00:00.000Z"
+          }
+        },
+        "x-examples": {},
+        "description": ""
+      },
+      "PromotionMultivendorResponse": {
+        "title": "PromotionMultivendorResponse",
+        "type": "object",
+        "x-examples": {
+          "example-1": {
+            "vendorPromotionId": "PROMOTION001",
+            "title": "Buy 3 get 1 free",
+            "description": "Buy 10, get 12 - Buy 12, get 16 or discounts 10% off for all beers.",
+            "type": "STEPPED_DISCOUNT",
+            "budget": 100.5,
+            "startDate": "2020-01-20T18:00:00.000Z",
+            "endDate": "2020-01-20T18:00:00.000Z",
+            "image": "http://example.com",
+            "quantityLimit": 10,
+            "vendorItemIds": [
+              "12345",
+              "54321"
+            ],
+            "updatedAt": "2020-01-20T18:00:00.000Z",
+            "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08"
+          }
+        },
+        "description": "",
+        "properties": {
+          "vendorPromotionId": {
+            "type": "string",
+            "description": "Promotion ID from external Source.",
+            "example": "PROMOTION001"
+          },
+          "title": {
+            "type": "string",
+            "description": "The promotion title. The label displayed on the promotion list.",
+            "example": "Buy 3 get 1 free"
+          },
+          "description": {
+            "type": "string",
+            "description": "The complete description of the promotion. It describes the promotion itself, about how the promotion works.",
+            "example": "Buy 10, get 12 - Buy 12, get 16 or discounts 10% off for all beers."
+          },
+          "type": {
+            "type": "string",
+            "description": "The type of the promotion.",
+            "example": "STEPPED_DISCOUNT",
+            "enum": [
+              "STEPPED_DISCOUNT",
+              "STEPPED_FREE_GOOD",
+              "DISCOUNT",
+              "FREE_GOOD",
+              "FLEXIBLE_DISCOUNT"
+            ]
+          },
+          "budget": {
+            "type": "number",
+            "description": "Promotion budget.",
+            "example": 100.5
+          },
+          "startDate": {
+            "type": "string",
+            "description": "Promotion activation date.",
+            "example": "2020-01-20T18:00:00.000Z",
+            "format": "date-time"
+          },
+          "endDate": {
+            "type": "string",
+            "description": "Promotion deactivation date.",
+            "example": "2020-01-20T18:00:00.000Z",
+            "format": "date-time"
+          },
+          "image": {
+            "type": "string",
+            "description": "Image used as background of the promotion.",
+            "format": "uri"
+          },
+          "quantityLimit": {
+            "type": "integer",
+            "description": "Integer of the consumption limit of the promotion.",
+            "format": "int32",
+            "example": 10
+          },
+          "vendorItemIds": {
+            "type": "array",
+            "description": "The list of vendor item ids that are part of the promotion.",
+            "example": [
+              "12345",
+              "54321"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "updatedAt": {
+            "type": "string",
+            "description": "Date that the promotion was updated.",
+            "example": "2020-01-20T18:00:00.000Z",
+            "format": "date-time"
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Promotion internal id."
+          }
+        },
+        "required": [
+          "vendorPromotionId",
+          "title",
+          "type",
+          "startDate",
+          "endDate",
+          "vendorItemIds"
+        ]
+      },
+      "PromotionResponseListByAccount": {
+        "title": "PromotionResponseListByAccount",
+        "type": "object",
+        "properties": {
+          "accountId": {
+            "type": "string"
+          },
+          "promotions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PromotionResponse"
+            }
+          }
+        }
+      },
+      "PromotionScore": {
+        "title": "PromotionScore",
+        "required": [
+          "promotionId",
+          "score"
+        ],
+        "type": "object",
+        "properties": {
+          "promotionId": {
+            "type": "string",
+            "description": "Promotion ID."
+          },
+          "score": {
+            "type": "number",
+            "description": "The promotion score. Integer value that represents a rank value for sorting."
+          }
+        }
+      },
+      "PromotionSkuGroup": {
+        "title": "PromotionSkuGroup",
+        "required": [
+          "skuGroupId",
+          "skus"
+        ],
+        "type": "object",
+        "properties": {
+          "skuGroupId": {
+            "type": "string",
+            "description": "The sku group ID. This ID will be used to link the sku provided to a promotion with this sku group."
+          },
+          "skus": {
+            "type": "array",
+            "example": [
+              "SKU001",
+              "SKU002",
+              "SKU003"
+            ],
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "PromotionVO": {
+        "title": "PromotionVO",
+        "required": [
+          "accountGroupIds",
+          "description",
+          "id",
+          "skuGroupIds",
+          "title",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "accountGroupIds": {
+            "type": "array",
+            "description": "The account groups of this promotion. This will link an account group to this promotion. With this information the middleware can identify for which accounts this promotion is available.",
+            "example": [
+              "12345",
+              "54321"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "budget": {
+            "type": "number",
+            "description": "Budget of the promotion.",
+            "example": 100.5
+          },
+          "description": {
+            "type": "string",
+            "description": "The complete description of the promotion. It describes the promotion itself, about how the promotion works.",
+            "example": "Buy 10, get 12 - Buy 12, get 16” or discounts \"10% off for all beers\"."
+          },
+          "disabled": {
+            "type": "boolean",
+            "description": "Tells if a promotion is disabled or not for an account.",
+            "example": false
+          },
+          "endDate": {
+            "type": "string",
+            "description": "Promotion deactivation date. Needs to be > than startDate. It should be in UTC timezone. https://en.wikipedia.org/wiki/ISO_8601",
+            "example": "2019-03-31T23:59:59.999Z"
+          },
+          "freeGoodGroupIds": {
+            "type": "array",
+            "description": "The free good groups of this promotion. This will link this promotion to the sku’s that will be free goodies when affected by this promotion. This field is required when promotion type is FREE_GOOD or STEPPED_FREE_GOOD.",
+            "example": [
+              "12345",
+              "54321"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "hidden": {
+            "type": "boolean",
+            "description": "Tells if a promotion is hidden or not for an account. Hidden promotions won't be shown by the GET operations.",
+            "example": false
+          },
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the promotion.",
+            "example": "1"
+          },
+          "promotionId": {
+            "type": "string",
+            "description": "Promotion ID from external source.",
+            "example": "PROMOTION001"
+          },
+          "promotionsRanking": {
+            "type": "integer",
+            "description": "The ranking of this promotion. This will link a ranking to this promotion. with this information the middleware can identity the ranking position of this promotion.",
+            "format": "int32",
+            "example": 100
+          },
+          "quantityLimit": {
+            "type": "integer",
+            "description": "Integer of the consumption limit of the promotion.",
+            "format": "int32",
+            "example": 10
+          },
+          "skuGroupIds": {
+            "type": "array",
+            "description": "The sku groups of this promotion. This will link this promotion to the sku's affected by this promotion. with this information the middleware can identity with sku's this promotion have.",
+            "example": [
+              "12345",
+              "54321"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "startDate": {
+            "type": "string",
+            "description": "Promotion activation date. It should be in UTC timezone. https://en.wikipedia.org/wiki/ISO_8601",
+            "example": "2019-03-04T00:00:00.000Z"
+          },
+          "title": {
+            "type": "string",
+            "description": "The promotion title. The label displayed on the promotion list.",
+            "example": "Buy 3 get 1 free"
+          },
+          "type": {
+            "type": "string",
+            "description": "The promotion type that can be one of the following: DISCOUNT, FREE_GOOD, STEPPED_DISCOUNT and STEPPED_FREE_GOOD.",
+            "example": "STEPPED_DISCOUNT",
+            "enum": [
+              "STEPPED_DISCOUNT",
+              "STEPPED_FREE_GOOD",
+              "DISCOUNT",
+              "FREE_GOOD",
+              "FLEXIBLE_DISCOUNT"
+            ]
+          }
+        }
+      },
+      "ResponseEntity": {
+        "title": "ResponseEntity",
+        "type": "object",
+        "properties": {
+          "body": {
+            "type": "object",
+            "properties": {}
+          },
+          "statusCode": {
+            "type": "string",
+            "enum": [
+              "100 CONTINUE",
+              "101 SWITCHING_PROTOCOLS",
+              "102 PROCESSING",
+              "103 CHECKPOINT",
+              "200 OK",
+              "201 CREATED",
+              "202 ACCEPTED",
+              "203 NON_AUTHORITATIVE_INFORMATION",
+              "204 NO_CONTENT",
+              "205 RESET_CONTENT",
+              "206 PARTIAL_CONTENT",
+              "207 MULTI_STATUS",
+              "208 ALREADY_REPORTED",
+              "226 IM_USED",
+              "300 MULTIPLE_CHOICES",
+              "301 MOVED_PERMANENTLY",
+              "302 FOUND",
+              "302 MOVED_TEMPORARILY",
+              "303 SEE_OTHER",
+              "304 NOT_MODIFIED",
+              "305 USE_PROXY",
+              "307 TEMPORARY_REDIRECT",
+              "308 PERMANENT_REDIRECT",
+              "400 BAD_REQUEST",
+              "401 UNAUTHORIZED",
+              "402 PAYMENT_REQUIRED",
+              "403 FORBIDDEN",
+              "404 NOT_FOUND",
+              "405 METHOD_NOT_ALLOWED",
+              "406 NOT_ACCEPTABLE",
+              "407 PROXY_AUTHENTICATION_REQUIRED",
+              "408 REQUEST_TIMEOUT",
+              "409 CONFLICT",
+              "410 GONE",
+              "411 LENGTH_REQUIRED",
+              "412 PRECONDITION_FAILED",
+              "413 PAYLOAD_TOO_LARGE",
+              "413 REQUEST_ENTITY_TOO_LARGE",
+              "414 URI_TOO_LONG",
+              "414 REQUEST_URI_TOO_LONG",
+              "415 UNSUPPORTED_MEDIA_TYPE",
+              "416 REQUESTED_RANGE_NOT_SATISFIABLE",
+              "417 EXPECTATION_FAILED",
+              "418 I_AM_A_TEAPOT",
+              "419 INSUFFICIENT_SPACE_ON_RESOURCE",
+              "420 METHOD_FAILURE",
+              "421 DESTINATION_LOCKED",
+              "422 UNPROCESSABLE_ENTITY",
+              "423 LOCKED",
+              "424 FAILED_DEPENDENCY",
+              "425 TOO_EARLY",
+              "426 UPGRADE_REQUIRED",
+              "428 PRECONDITION_REQUIRED",
+              "429 TOO_MANY_REQUESTS",
+              "431 REQUEST_HEADER_FIELDS_TOO_LARGE",
+              "451 UNAVAILABLE_FOR_LEGAL_REASONS",
+              "500 INTERNAL_SERVER_ERROR",
+              "501 NOT_IMPLEMENTED",
+              "502 BAD_GATEWAY",
+              "503 SERVICE_UNAVAILABLE",
+              "504 GATEWAY_TIMEOUT",
+              "505 HTTP_VERSION_NOT_SUPPORTED",
+              "506 VARIANT_ALSO_NEGOTIATES",
+              "507 INSUFFICIENT_STORAGE",
+              "508 LOOP_DETECTED",
+              "509 BANDWIDTH_LIMIT_EXCEEDED",
+              "510 NOT_EXTENDED",
+              "511 NETWORK_AUTHENTICATION_REQUIRED"
+            ]
+          },
+          "statusCodeValue": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "Authorization": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  }
+}
