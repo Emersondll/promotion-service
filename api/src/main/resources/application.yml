@@ -1,0 +1,76 @@
+server:
+  port: 8080
+  max-http-header-size: ${MAX_HTTP_HEADER_SIZE:16KB}
+
+#Logs
+log:
+  appender: ${LOG_APPENDER}
+
+logging:
+  level:
+    ROOT: ${LOG_ROOT_LEVEL:INFO}
+  newRelic:
+    appender:
+      enabled: ${NEW_RELIC_APPENDER_ENABLED}
+
+spring:
+  application:
+    name: promotion-service-ms
+  data:
+    mongodb:
+      uri: ${MONGO_ATLAS_DB_CONNECTION}
+      database: ${MONGO_ATLAS_DB_DATABASE:Promotion}
+    web:
+      pageable:
+        default-page-size: ${PAGINATION_PAGE_SIZE_DEFAULT}
+        max-page-size: ${PAGINATION_PAGE_SIZE_MAX}
+        size-parameter: pageSize
+
+# Enable the validation of jwt data
+enableJwtValidation: ${ENABLE_JWT_VALIDATION}
+
+database:
+  base: -Promotions
+  promotionAccounts: _PromotionAccounts
+  maxQueryTimeout: ${QUERY_TIMEOUT_MS}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        enabled-by-default: false
+  health:
+    mongo:
+      enabled: true
+    probes:
+      enabled: true
+    livenessState:
+      enabled: true
+    readinessState:
+      enabled: true
+  endpoint:
+    health:
+      show-components: never
+      show-details: never
+      enabled: true
+      probes:
+        enabled: true
+      group:
+        liveness:
+          include: livenessState, mongo
+        readiness:
+          include: readinessState, mongo
+
+async:
+  corePoolSize: ${ASYNC_CORE_POOLSIZE:100}
+  maxPoolSize: ${ASYNC_MAX_POOL_SIZE:200}
+  queueCapacity: ${ASYNC_QUEUE_CAPACITY:50}
+
+featuresToggle:
+  supportedCountries: ${SUPPORTED_COUNTRIES}
+
+parameters:
+  vendor-ids-max-size: ${PROMOTION_PLATFORM_IDS_PARAMETER_MAX_SIZE}
+  promotion-platform-ids-max-size: ${VENDOR_IDS_PARAMETER_MAX_SIZE}
+
+nonOfficialSupportedLanguages: ${NON_OFFICIAL_SUPPORTED_LANGUAGES}
