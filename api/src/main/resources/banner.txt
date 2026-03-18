@@ -1,0 +1,1 @@
+ ${Ansi.RED} :: @project.version@ :: ${Ansi.DEFAULT}
