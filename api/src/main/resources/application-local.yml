@@ -1,0 +1,31 @@
+server:
+  port: 8081
+
+logging:
+  newRelic:
+    appender:
+      enabled: false
+
+spring:
+  data:
+    mongodb:
+      uri: mongodb://promotion:promotion@localhost:27011
+      database: Promotion
+    web:
+      pageable:
+        default-page-size: 50
+        max-page-size: 50
+
+enableJwtValidation: false
+
+database:
+  maxQueryTimeout: 10000
+
+featuresToggle:
+  supportedCountries: AR,BE,BR,CA,CL,CO,DE,DO,EC,ES,GB,HN,ID,MX,NL,PA,PE,PH,PY,SV,TH,TZ,US,UY,ZA
+
+parameters:
+  vendor-ids-max-size: 50
+  promotion-platform-ids-max-size: 50
+
+nonOfficialSupportedLanguages: en-ES
