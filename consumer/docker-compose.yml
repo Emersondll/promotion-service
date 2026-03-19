@@ -1,0 +1,71 @@
+version: '2.1'
+services:
+    rabbitmq:
+        image: rabbitmq:3.6-management-alpine
+        ports:
+          - "15672:15672"
+          - "5672:5672"
+        environment:
+          RABBITMQ_DEFAULT_VHOST: vhost
+        container_name: rabbitmq
+        healthcheck:
+          test: ["CMD-SHELL", "nc -z localhost 15672"]
+          interval: 5s
+          timeout: 5s
+          retries: 5
+
+    mongo:
+        image: mongo
+        ports:
+          - "27011:27017"
+        command: mongod --quiet --logpath /dev/null  
+        healthcheck:
+          test: ["CMD-SHELL", "mongo --eval 'db.runCommand({ connectionStatus: 1 })'"]
+          interval: 5s
+          timeout: 5s
+          retries: 5
+          
+    consumer:
+        image: promotion-consumer:latest
+        environment:
+          - RABBIT_MQ_HOST=rabbitmq
+          - RABBIT_MQ_PORT=5672
+          - RABBIT_MQ_USER_NAME=guest
+          - RABBIT_MQ_PASSWORD=guest
+          - RABBIT_MQ_VIRTUAL_HOST=vhost
+          - RABBIT_MQ_LISTENER_CONCURRENCY=1
+          - RABBIT_MQ_LISTENER_MAX_CONCURRENCY=1
+          - RABBIT_MQ_LISTENER_PREFETCH=1
+          - RABBIT_MQ_LISTENER_RETRY_MAX_ATTEMPTS=1
+          - RABBITMQ_PROMOTIONS_SSL_ENABLED=false
+          - RABBITMQ_PROMOTIONS_SSL_VERSION=
+          - ATLAS_DB_CONNECTION=mongodb://mongo:27017
+          - PROMOTION_SPLIT=5
+        ports:
+          - "8085:8080"
+        healthcheck:
+          test: ["CMD-SHELL", "nc -z localhost 8085"]
+          interval: 5s
+          timeout: 5s
+          retries: 5
+        depends_on:
+          "rabbitmq":
+              condition: service_healthy
+
+    relay:
+        image: promotion-relay-service:latest
+        environment:
+          - SPRING_PROFILES_ACTIVE=local
+          - RABBIT_MQ_HOST=rabbitmq
+          - RABBIT_MQ_VIRTUAL_HOST=vhost
+        ports:
+          - "8086:8080"
+        healthcheck:
+          test: ["CMD-SHELL", "nc -z localhost 8085"]
+          interval: 5s
+          timeout: 5s
+          retries: 5
+        depends_on:
+          "rabbitmq":
+              condition: service_healthy
+
