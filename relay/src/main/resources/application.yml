@@ -1,0 +1,88 @@
+server:
+  port: 8080
+
+#Logs
+log:
+  appender: ${LOG_APPENDER}
+
+logging:
+  level:
+    ROOT: ${LOG_ROOT_LEVEL:INFO}
+  newRelic:
+    appender:
+      enabled: true
+
+spring:
+  application:
+    name: promotion-relay-service
+  rabbitmq:
+    host: ${RABBIT_MQ_HOST}
+    port: ${RABBIT_MQ_PORT}
+    username: ${RABBIT_MQ_USER_NAME}
+    password: ${RABBIT_MQ_PASSWORD}
+    virtual-host: ${RABBIT_MQ_VIRTUAL_HOST}
+    ssl:
+      enabled: ${RABBITMQ_SSL_ENABLED}
+      algorithm: ${RABBITMQ_SSL_VERSION}
+      verify-hostname: false
+
+
+api:
+  username: ${API_USERNAME:relay}
+  password: ${API_PASSWORD:MUQwrD5ZeHKA}
+  roles: ${API_ROLES:BACKEND}
+
+queues:
+  multi-vendor:
+    promotion:
+      name: promotion-multi-vendor
+
+operations:
+  relay: /
+
+#Messages Bulk Size
+bulk:
+  promotionBulkSize: ${PROMOTION_BULK_SIZE:1000}
+  promotionMultiVendorBulkSize: ${PROMOTION_MULTI_VENDOR_BULK_SIZE:1000}
+
+# Enable the "/refresh" endpoint for dynamic configuration changes
+management:
+  endpoints:
+    web:
+      exposure:
+        enabled-by-default: false
+  health:
+    rabbit:
+      enabled: true
+    probes:
+      enabled: true
+    livenessState:
+      enabled: true
+    readinessState:
+      enabled: true
+  endpoint:
+    health:
+      show-components: never
+      show-details: never
+      enabled: true
+      probes:
+        enabled: true
+      group:
+        liveness:
+          include: livenessState, rabbit
+        readiness:
+          include: readinessState, rabbit
+
+featuresToggle:
+  supportedCountries: ${SUPPORTED_COUNTRIES}
+  passwordStrength:
+    enabled: ${PASSWORD_STRENGTH_ENABLED:true}
+    strength: ${PASSWORD_STRENGTH_FORCE:4}
+
+sync:
+  countries:
+    vendorIds: ${PROMOTION_DEFAULT_COUNTRY_VENDOR_IDS}
+
+basicAuthEnabled: ${BASIC_AUTH_ENABLED:false}
+
+nonOfficialSupportedLanguages: ${NON_OFFICIAL_SUPPORTED_LANGUAGES}

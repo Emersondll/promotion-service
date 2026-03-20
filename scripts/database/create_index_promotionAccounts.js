@@ -1,0 +1,60 @@
+db = db.getSiblingDB("Promotion");
+
+db.AQ_PromotionAccounts.createIndex( { accountId : 1, promotionId: 1},{unique: 1} );
+db.AR_PromotionAccounts.createIndex( { accountId : 1, promotionId: 1},{unique: 1} );
+db.BR_PromotionAccounts.createIndex( { accountId : 1, promotionId: 1},{unique: 1} );
+db.CL_PromotionAccounts.createIndex( { accountId : 1, promotionId: 1},{unique: 1} );
+db.CO_PromotionAccounts.createIndex( { accountId : 1, promotionId: 1},{unique: 1} );
+db.DO_PromotionAccounts.createIndex( { accountId : 1, promotionId: 1},{unique: 1} );
+db.EC_PromotionAccounts.createIndex( { accountId : 1, promotionId: 1},{unique: 1} );
+db.ES_PromotionAccounts.createIndex( { accountId : 1, promotionId: 1},{unique: 1} );
+db.MX_PromotionAccounts.createIndex( { accountId : 1, promotionId: 1},{unique: 1} );
+db.NL_PromotionAccounts.createIndex( { accountId : 1, promotionId: 1},{unique: 1} );
+db.PE_PromotionAccounts.createIndex( { accountId : 1, promotionId: 1},{unique: 1} );
+db.ZA_PromotionAccounts.createIndex( { accountId : 1, promotionId: 1},{unique: 1} );
+db.PY_PromotionAccounts.createIndex( { accountId : 1, promotionId: 1},{unique: 1} );
+db.PA_PromotionAccounts.createIndex( { accountId : 1, promotionId: 1},{unique: 1} );
+db.SV_PromotionAccounts.createIndex( { accountId : 1, promotionId: 1},{unique: 1} );
+db.TZ_PromotionAccounts.createIndex( { accountId : 1, promotionId: 1},{unique: 1} );
+db.UY_PromotionAccounts.createIndex( { accountId : 1, promotionId: 1},{unique: 1} );
+db.UG_PromotionAccounts.createIndex( { accountId : 1, promotionId: 1},{unique: 1} );
+
+db.AQ_PromotionAccounts.createIndex( {promotionId: 1, updateAt:1} );
+db.AR_PromotionAccounts.createIndex( {promotionId: 1, updateAt:1} );
+db.BR_PromotionAccounts.createIndex( {promotionId: 1, updateAt:1} );
+db.CL_PromotionAccounts.createIndex( {promotionId: 1, updateAt:1} );
+db.CO_PromotionAccounts.createIndex( {promotionId: 1, updateAt:1} );
+db.DO_PromotionAccounts.createIndex( {promotionId: 1, updateAt:1} );
+db.EC_PromotionAccounts.createIndex( {promotionId: 1, updateAt:1} );
+db.ES_PromotionAccounts.createIndex( {promotionId: 1, updateAt:1} );
+db.MX_PromotionAccounts.createIndex( {promotionId: 1, updateAt:1} );
+db.NL_PromotionAccounts.createIndex( {promotionId: 1, updateAt:1} );
+db.PE_PromotionAccounts.createIndex( {promotionId: 1, updateAt:1} );
+db.ZA_PromotionAccounts.createIndex( {promotionId: 1, updateAt:1} );
+db.PY_PromotionAccounts.createIndex( {promotionId: 1, updateAt:1} );
+db.PA_PromotionAccounts.createIndex( {promotionId: 1, updateAt:1} );
+db.SV_PromotionAccounts.createIndex( {promotionId: 1, updateAt:1} );
+db.TZ_PromotionAccounts.createIndex( {promotionId: 1, updateAt:1} );
+db.UY_PromotionAccounts.createIndex( {promotionId: 1, updateAt:1} );
+db.UG_PromotionAccounts.createIndex( {promotionId: 1, updateAt:1} );
+
+db.BE_PromotionAccounts.createIndex( {vendorId : 1, vendorPromotionId: 1} );
+db.CA_PromotionAccounts.createIndex( {vendorId : 1, vendorPromotionId: 1} );
+db.DE_PromotionAccounts.createIndex( {vendorId : 1, vendorPromotionId: 1} );
+db.ES_PromotionAccounts.createIndex( {vendorId : 1, vendorPromotionId: 1} );
+db.GB_PromotionAccounts.createIndex( {vendorId : 1, vendorPromotionId: 1} );
+db.HN_PromotionAccounts.createIndex( {vendorId : 1, vendorPromotionId: 1} );
+db.ID_PromotionAccounts.createIndex( {vendorId : 1, vendorPromotionId: 1} );
+db.NL_PromotionAccounts.createIndex( {vendorId : 1, vendorPromotionId: 1} );
+db.US_PromotionAccounts.createIndex( {vendorId : 1, vendorPromotionId: 1} );
+
+db.BE_PromotionAccounts.createIndex( { vendorId : 1, vendorAccountId : 1, vendorPromotionId: 1},{unique: 1} );
+db.CA_PromotionAccounts.createIndex( { vendorId : 1, vendorAccountId : 1, vendorPromotionId: 1},{unique: 1} );
+db.DE_PromotionAccounts.createIndex( { vendorId : 1, vendorAccountId : 1, vendorPromotionId: 1},{unique: 1} );
+db.ES_PromotionAccounts.createIndex( { vendorId : 1, vendorAccountId : 1, vendorPromotionId: 1},{unique: 1} );
+db.GB_PromotionAccounts.createIndex( { vendorId : 1, vendorAccountId : 1, vendorPromotionId: 1},{unique: 1} );
+db.HN_PromotionAccounts.createIndex( { vendorId : 1, vendorAccountId : 1, vendorPromotionId: 1},{unique: 1} );
+db.ID_PromotionAccounts.createIndex( { vendorId : 1, vendorAccountId : 1, vendorPromotionId: 1},{unique: 1} );
+db.NL_PromotionAccounts.createIndex( { vendorId : 1, vendorAccountId : 1, vendorPromotionId: 1},{unique: 1} );
+db.US_PromotionAccounts.createIndex( { vendorId : 1, vendorAccountId : 1, vendorPromotionId: 1},{unique: 1} );
+

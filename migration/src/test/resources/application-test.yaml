@@ -1,0 +1,14 @@
+spring:
+  data:
+    mongodb:
+      uri:
+      database: Promotion
+migration:
+  total-of-elements: 100
+  node: 1
+  nodePool: 4
+  page-size: 100
+  country: MX
+  threads-amount: 10
+  platform-id:
+    enabled: true

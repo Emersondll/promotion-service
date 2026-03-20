@@ -1,0 +1,30 @@
+sh.enableSharding("Promotion");
+
+sh.shardCollection("Promotion.AQ_PromotionAccounts", { accountId : 1, promotionId : 1 } );
+sh.shardCollection("Promotion.AR_PromotionAccounts", { accountId : 1, promotionId : 1 } );
+sh.shardCollection("Promotion.BR_PromotionAccounts", { accountId : 1, promotionId : 1 } );
+sh.shardCollection("Promotion.CL_PromotionAccounts", { accountId : 1, promotionId : 1 } );
+sh.shardCollection("Promotion.CO_PromotionAccounts", { accountId : 1, promotionId : 1 } );
+sh.shardCollection("Promotion.DO_PromotionAccounts", { accountId : 1, promotionId : 1 } );
+sh.shardCollection("Promotion.EC_PromotionAccounts", { accountId : 1, promotionId : 1 } );
+sh.shardCollection("Promotion.ES_PromotionAccounts", { accountId : 1, promotionId : 1 } );
+sh.shardCollection("Promotion.MX_PromotionAccounts", { accountId : 1, promotionId : 1 } );
+sh.shardCollection("Promotion.NL_PromotionAccounts", { accountId : 1, promotionId : 1 } );
+sh.shardCollection("Promotion.PA_PromotionAccounts", { accountId : 1, promotionId : 1 } );
+sh.shardCollection("Promotion.PE_PromotionAccounts", { accountId : 1, promotionId : 1 } );
+sh.shardCollection("Promotion.PY_PromotionAccounts", { accountId : 1, promotionId : 1 } );
+sh.shardCollection("Promotion.SV_PromotionAccounts", { accountId : 1, promotionId : 1 } );
+sh.shardCollection("Promotion.TZ_PromotionAccounts", { accountId : 1, promotionId : 1 } );
+sh.shardCollection("Promotion.UG_PromotionAccounts", { accountId : 1, promotionId : 1 } );
+sh.shardCollection("Promotion.UY_PromotionAccounts", { accountId : 1, promotionId : 1 } );
+sh.shardCollection("Promotion.ZA_PromotionAccounts", { accountId : 1, promotionId : 1 } );
+
+sh.shardCollection("Promotion.BE_PromotionAccounts", { vendorId : 1, vendorAccountId : 1, vendorPromotionId: 1 } );
+sh.shardCollection("Promotion.CA_PromotionAccounts", { vendorId : 1, vendorAccountId : 1, vendorPromotionId: 1 } );
+sh.shardCollection("Promotion.DE_PromotionAccounts", { vendorId : 1, vendorAccountId : 1, vendorPromotionId: 1 } );
+sh.shardCollection("Promotion.ES_PromotionAccounts", { vendorId : 1, vendorAccountId : 1, vendorPromotionId: 1 } );
+sh.shardCollection("Promotion.GB_PromotionAccounts", { vendorId : 1, vendorAccountId : 1, vendorPromotionId: 1 } );
+sh.shardCollection("Promotion.HN_PromotionAccounts", { vendorId : 1, vendorAccountId : 1, vendorPromotionId: 1 } );
+sh.shardCollection("Promotion.ID_PromotionAccounts", { vendorId : 1, vendorAccountId : 1, vendorPromotionId: 1 } );
+sh.shardCollection("Promotion.NL_PromotionAccounts", { vendorId : 1, vendorAccountId : 1, vendorPromotionId: 1 } );
+sh.shardCollection("Promotion.US_PromotionAccounts", { vendorId : 1, vendorAccountId : 1, vendorPromotionId: 1 } );

@@ -1,0 +1,37 @@
+[
+  {
+    "id": "PROM0",
+    "type": "STEPPED_FREE_GOOD",
+    "title": "velit amet aliquip",
+    "description": "tempor in laboris fugiat aliqua",
+    "accountGroupIds": [
+      262,
+      199,
+      732,
+      910,
+      449,
+      892,
+      842
+    ],
+    "freeGoodGroupIds": [
+      553,
+      271,
+      143,
+      981,
+      175,
+      894,
+      470
+    ],
+    "skuGroupIds": [
+      116,
+      295,
+      584,
+      482,
+      865,
+      919,
+      325
+    ],
+    "promotionsRanking": 29,
+    "startDate": "2019-02-21T07:09:33.897'Z'"
+  }
+]

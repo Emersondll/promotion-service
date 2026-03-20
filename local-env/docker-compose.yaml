@@ -1,0 +1,44 @@
+version: '3.4'
+
+volumes:
+  promotion-dbs-data:
+  rabbitmq-promotion-data:
+  rabbitmq-pricing-data:
+
+services:
+  catalogs-dbs:
+    container_name: promotion-dbs
+    image: mongo:5.0.1
+    restart: always
+    ports:
+      - "27011:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: promotion
+      MONGO_INITDB_ROOT_PASSWORD: promotion
+      MONGO_INITDB_DATABASE: Promotion
+    volumes:
+      - promotion-dbs-data:/data/db
+      - ./mongo-setup:/docker-entrypoint-initdb.d
+      - ../scripts/database:/scripts
+
+  promotion-rabbitmq:
+    container_name: promotion-rabbitmq
+    image: rabbitmq:3.9.2-management
+    restart: always
+    ports:
+      - "5671:5672"
+      - "15671:15672"
+    volumes:
+      - ./rabbit-setup/rabbitmq-promotion.conf:/etc/rabbitmq/rabbitmq.conf
+      - rabbitmq-promotion-data:/var/lib/rabbitmq/
+
+  pricing-rabbitmq:
+    container_name: pricing-rabbitmq
+    image: rabbitmq:3.9.2-management
+    restart: always
+    ports:
+      - "5670:5672"
+      - "15670:15672"
+    volumes:
+      - ./rabbit-setup/rabbitmq-pricing.conf:/etc/rabbitmq/rabbitmq.conf
+      - rabbitmq-promotion-data:/var/lib/rabbitmq/

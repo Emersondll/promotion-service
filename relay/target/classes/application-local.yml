@@ -1,0 +1,43 @@
+server:
+  port: 8083
+
+logging:
+  level:
+    ROOT: INFO
+  newRelic:
+    appender:
+      enabled: false
+
+featuresToggle:
+  supportedCountries: AR, BR, BE, CA, CL, CO, DE, DO, EC, ES, GB, HN, ID, MX, NL, PA, PE, PH, PY, SV, TH, TZ, UG, US, UY, ZA
+
+sync:
+  countries:
+    vendorIds: '{
+      AR:"52b2e1c5-578a-445e-85c5-d190cba8df2d",
+      BR:"7a51f522-c3e3-421b-89d8-290d8eb2eddd",
+      CL:"b4697d29-5067-46ae-9d6a-4ce21d76b66b",
+      CO:"e6929cd6-5e48-47c1-822f-4f9ac749c650",
+      DO:"27f60e79-1c0e-47d6-b31c-af787d192c1c",
+      EC:"fb81bcba-92fc-496c-a789-b4b5af4019f1",
+      MX:"8e09bb5d-fe87-4a30-9817-50578e58c3be",
+      PA:"c45d6e80-420c-4f57-ae77-2f5847b8ea29",
+      PE:"bfab19f4-3814-40ec-8b13-e6cd9d306d0b",
+      PY:"f94cdbd8-37ec-415d-8ac3-3e3df504cc08",
+      SV:"f3c85b1d-3e89-4df6-91a3-dc490434e025",
+      UY:"86bee559-89fb-473f-839a-7232e85eab01",
+      ZA:"0b9d7773-dca3-4e06-b697-70a7d70c8f5a"
+    }'
+
+spring:
+  rabbitmq:
+    host: localhost
+    port: 5671
+    username: guest
+    password: guest
+    virtual-host: promotion_dev
+    ssl:
+      enabled: false
+      algorithm: TLSv1.2
+
+nonOfficialSupportedLanguages: en-ES

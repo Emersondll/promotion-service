@@ -1,0 +1,56 @@
+{
+  "groups": [
+    {
+      "name": "migration",
+      "type": "com.abinbev.b2b.promotion.migration.MigrationProperties",
+      "sourceType": "com.abinbev.b2b.promotion.migration.MigrationProperties"
+    },
+    {
+      "name": "migration.database",
+      "type": "com.abinbev.b2b.promotion.migration.MigrationProperties$Database",
+      "sourceType": "com.abinbev.b2b.promotion.migration.MigrationProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "migration.country",
+      "type": "java.lang.String",
+      "sourceType": "com.abinbev.b2b.promotion.migration.MigrationProperties"
+    },
+    {
+      "name": "migration.database.promotion",
+      "type": "java.lang.String",
+      "sourceType": "com.abinbev.b2b.promotion.migration.MigrationProperties$Database"
+    },
+    {
+      "name": "migration.node",
+      "type": "java.lang.Long",
+      "sourceType": "com.abinbev.b2b.promotion.migration.MigrationProperties",
+      "defaultValue": 0
+    },
+    {
+      "name": "migration.node-pool",
+      "type": "java.lang.Long",
+      "sourceType": "com.abinbev.b2b.promotion.migration.MigrationProperties",
+      "defaultValue": 0
+    },
+    {
+      "name": "migration.page-size",
+      "type": "java.lang.Long",
+      "sourceType": "com.abinbev.b2b.promotion.migration.MigrationProperties",
+      "defaultValue": 0
+    },
+    {
+      "name": "migration.threads-amount",
+      "type": "java.lang.Long",
+      "sourceType": "com.abinbev.b2b.promotion.migration.MigrationProperties"
+    },
+    {
+      "name": "migration.total-of-elements",
+      "type": "java.lang.Long",
+      "sourceType": "com.abinbev.b2b.promotion.migration.MigrationProperties",
+      "defaultValue": 0
+    }
+  ],
+  "hints": []
+}

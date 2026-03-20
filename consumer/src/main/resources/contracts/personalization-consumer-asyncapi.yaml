@@ -1,0 +1,327 @@
+asyncapi: 3.0.0
+info:
+  title: Promotion Update Consumer
+  tags:
+    - name: GPE
+      description: Global Pricing Engine
+    - name: Promotion
+      description: Promotion Consumer Service
+    - name: Async
+  description: |-
+    Promotion Update Consumer
+
+    This API has the following features:
+    * POST
+      * TOPIC bees-sync-promotions (from BEES-SYNC to Promotion-consumer)
+      * QUEUE {country}-sync_promotion_updated_queue
+      * Receive already partitioned messages to be updated
+    * DELETE
+      * TOPIC bees-sync-promotions (from BEES-SYNC to Promotion-consumer)
+      * QUEUE {country}-sync_promotion_deleted_queue
+      * Receive messages with list of vendorPromotionIds and/or list of vendorAccountIds
+
+  contact:
+    name: Global Pricing Engine | GPE
+    url: "https://ab-inbev.atlassian.net/wiki/spaces/PKB/pages/1800012381/Global+Pricing+Engine+Wiki"
+  license:
+    name: Anheuser-Busch InBev © 2024
+  version: 1.0.0
+  x-audience: BUSINESS_UNIT_INTERNAL
+  x-business-unit: PLATFORM
+  x-context: PRODUCT
+  x-domain: PROMOTION
+  x-subdomain: PROMOTION_LIMIT
+
+servers:
+  sit:
+    host: serious-lobster.rmq.cloudamqp.com
+    protocol: amqp
+    description: Shared SIT server
+  uat:
+    host: acrobatic-shark.rmq.cloudamqp.com
+    protocol: amqp
+    description: Shared UAT server
+  prod:
+    host: hip-poodle.rmq.cloudamqp.com
+    protocol: amqp
+    description: Shared Production server
+
+operations:
+  receivePostMessage:
+    action: receive
+    summary: Receives messages from sync to create or update promotions
+    description: Each message must contain a maximum of 10 promotions
+    channel:
+      $ref: "#/channels/country_sync_promotion_updated_queue"
+    messages:
+      - $ref: >-
+          #/channels/country_sync_promotion_updated_queue/messages/receivePostMessage.message
+
+  receiveDeleteMessage:
+    action: receive
+    summary: Receives messages from sync to create or update promotions
+    description: Each message must contain a maximum of 10 promotions
+    channel:
+      $ref: '#/channels/country_sync_promotion_deleted_queue'
+
+channels:
+  country_sync_promotion_updated_queue:
+    address: "country_sync_promotion_updated_queue"
+    bindings:
+      amqp:
+        is: queue
+        queue:
+          name: "{country}_sync_promotion_updated_queue"
+    tags:
+      - name: sync
+      - name: platform
+      - name: pricing
+      - name: promotion
+    messages:
+      receivePostMessage.message:
+        headers:
+          $ref: "#/components/schemas/DefaultHeader"
+        payload:
+          $ref: "#/components/schemas/PromotionCreateRequest"
+        examples:
+          - name: PromotionMessageUpdate
+            summary: Create or update of an promotion
+            payload:
+              - "vendorPromotionId": "PROMOTION001"
+                "title": "Promotion title!"
+                "description": "Promotion description."
+                "type": "DISCOUNT"
+                "startDate": "2024-03-26T01:15:22Z"
+                "endDate": "2050-04-24T02:15:22Z"
+                "image": "http://example.com"
+                "budget": 15
+                "quantityLimit": 100
+                translations:
+                  - en-US:
+                      "title": "Birthday promotion."
+                      "description": "Promotion for birthdays."
+                      "image": "http://example.com"
+                    pt-BR:
+                      "title": "Promoção de aniversário."
+                      "description": "Promoção para aniversariantes."
+                      "image": "http://example.com"
+                "defaultLanguage": "en-US"
+  country_sync_promotion_deleted_queue:
+    address: "country_sync_promotion_deleted_queue"
+    bindings:
+      amqp:
+        is: queue
+        queue:
+          name: "{country}_sync_promotion_deleted_queue"
+    tags:
+      - name: sync
+      - name: platform
+      - name: pricing
+      - name: promotion
+    messages:
+      receiveDeleteMessage.message:
+        headers:
+          $ref: "#/components/schemas/DefaultHeader"
+        payload:
+          $ref: "#/components/schemas/PromotionDeleteRequest"
+        examples:
+          - name: PromotionMessageDelete
+            summary: Delete of an promotion
+            payload:
+              - "vendorAccountIds": ["ACCOUNT001", "ACCOUNT002"]
+              - "vendorPromotionIds": ["PROMOTION001", "PROMOTION002", "PROMOTION003"]
+
+components:
+  schemas:
+    PromotionCreateRequest:
+      type: object
+      description: Represents a message from queue {country}_sync_promotion_updated_queue
+      properties:
+        vendorPromotionId:
+          type: string
+          description: The unique identifier of the promotion.
+          example: "BIRTHDAY_PROMOTION"
+        title:
+          type: string
+          description: The title of the promotion.
+          example: "Promotion title!"
+        description:
+          type: string
+          description: The description of the promotion.
+          example: "Promotion description."
+        type:
+          type: string
+          description: The type of the promotion.
+          example: "DISCOUNT"
+        startDate:
+          type: string
+          format: date-time
+          description: The start date of the promotion.
+          example: "2024-03-26T01:15:22Z"
+        endDate:
+          type: string
+          format: date-time
+          description: The end date of the promotion.
+          example: "2024-04-24T02:15:22Z"
+        image:
+          type: string
+          description: The image URL of the promotion.
+          example: "http://example.com"
+        budget:
+          type: number
+          description: The budget of the promotion.
+          example: 15
+        quantityLimit:
+          type: integer
+          description: The quantity limit of the promotion.
+          example: 100
+        translations:
+          type: object
+          description: The translations of the promotion.
+          properties:
+            "en-US":
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: The title of the promotion in English.
+                  example: "Birthday promotion."
+                description:
+                  type: string
+                  description: The description of the promotion in English.
+                  example: "Promotion for birthdays."
+                image:
+                  type: string
+                  description: The image URL of the promotion in English.
+                  example: "http://example.com"
+              required:
+                - title
+            "pt-BR":
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: The title of the promotion in Portuguese.
+                  example: "Promoção de aniversário."
+                description:
+                  type: string
+                  description: The description of the promotion in Portuguese.
+                  example: "Promoção para aniversariantes."
+                image:
+                  type: string
+                  description: The image URL of the promotion in Portuguese.
+                  example: "http://example.com"
+              required:
+                - title
+          example:
+            [
+              "en-US":
+                {
+                  "title": "Birthday promotion.",
+                  "description": "Promotion for birthdays.",
+                  "image": "http://example.com",
+                },
+              "pt-BR":
+                {
+                  "title": "Promoção de aniversário.",
+                  "description": "Promoção para aniversariantes.",
+                  "image": "http://example.com",
+                },
+            ]
+        defaultLanguage:
+          type: string
+          description: The default language of the promotion.
+          example: "en-US"
+      required:
+        - vendorPromotionId
+        - title
+        - type
+        - startDate
+        - endDate
+
+    PromotionDeleteRequest:
+      type: object
+      description: Represents a message from queue {country}_sync_promotion_deleted_queue
+      properties:
+        vendorAccountIds:
+          type: string
+          description: Array of account unique identifier.
+          example: ["ACCOUNT001", "ACCOUNT002"]
+        vendorPromotionIds:
+          type: string
+          description: Array of promotion unique identifier.
+          example: ["PROMOTION001", "PROMOTION002", "PROMOTION003"]
+      required:
+        - vendorPromotionIds
+
+    DefaultHeader:
+      type: object
+      description: Represents default headers of a message
+      required:
+        - country
+        - method
+        - timestamp
+        - vendorId
+        - requestTraceId
+        - timezone
+      properties:
+        country:
+          type: string
+          description: The country code. It identifies the origin country of the message
+          format: string
+          example: BR
+        method:
+          type: string
+          format: string
+          example: POST/DELETE
+          description: The type of method used (POST / DELETE)
+        parentRequestTraceId:
+          type: string
+          format: uuid
+          description: It's an identifier using UUID format that is used to correlaterelated messages across different services
+          example: parent-trace-id
+        requestTraceId:
+          type: string
+          format: string
+          description: It's an identifier using UUID format that is used to correlaterelated messages across different services
+          example: request-trace-id
+        timezone:
+          type: string
+          format: string
+          description: Interactive Time Zone Map for current time zones worldwide.
+          example: UTC
+        vendorId:
+          type: string
+          description: The vendor code
+          format: string
+          example: 58870cbc-7809-4e18-ba59-986b4992c842
+        timestamp:
+          type: number
+          format: long
+          description: The message timestamp. It identifies when the message was published
+          example: 1713449342
+        version:
+          type: string
+          format: string
+          description: The message version using Major format (v1, v2, etc.). It identifies the version of the message schema
+          example: v3
+        x-bees-caller:
+          type: string
+          format: string
+          description: The origin service name. It identifies the service that published the message
+          example: data-ingestion-etl-consumer
+  parameters:
+    country:
+      description: The country code. It identifies the origin country of the message
+      examples:
+        - "br"
+        - "ar"
+        - "pe"
+    vendorId:
+      description: The vendorId code
+      examples:
+        - "58870cbc-7809-4e18-ba59-986b4992c842"
+    timestamp:
+      description: provide the time of the request, data type long
+      examples:
+        - "1712088536"

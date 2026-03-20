@@ -1,0 +1,33 @@
+spring:
+  main:
+    web-application-type: NONE
+  application:
+    name: promotion-migration
+  data:
+    mongodb:
+      uri: ${MIGRATION_DATABASE_CONNECTION}
+      database: Promotion
+migration:
+  total-of-elements: ${MIGRATION_SIZE}
+  node: ${MIGRATION_NODE}
+  nodePool: ${MIGRATION_NODE_POOL}
+  page-size: ${MIGRATION_PAGE_SIZE}
+  country: ${MIGRATION_COUNTRY}
+  threads-amount: ${MIGRATION_THREADS_AMOUNT}
+  platform-id:
+    enabled: ${MIGRATION_ENABLED}
+  database:
+    promotion: -Promotions
+
+server:
+  tomcat:
+    threads:
+      max: 200
+logging:
+  level:
+    org:
+      mongodb:
+        driver: WARN
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} -- [%thread] -- [${MIGRATION_COUNTRY}] -- [Node ${MIGRATION_NODE} of ${MIGRATION_NODE_POOL}] - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} -- %-5level %logger{36} -- [%thread] -- [${MIGRATION_COUNTRY}] -- [Node ${MIGRATION_NODE} of ${MIGRATION_NODE_POOL}] - %msg%n"

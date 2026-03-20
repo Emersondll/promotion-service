@@ -1,0 +1,1157 @@
+openapi: 3.0.3
+info:
+  title: Promotion Relay (v1, v2, v3)
+  description: Promotion service relay
+  license:
+    name: Anheuser-Busch InBev © 2021
+  version: 1.0.1-SNAPSHOT
+servers:
+  - url: https://services-dev.bees-platform.dev/api/promotion-relay/
+    description: dev
+  - url: https://services-uat.bees-platform.dev/api/promotion-relay/
+    description: uat
+  - url: https://services-sit.bees-platform.dev/api/promotion-relay/
+    description: sit
+security:
+  - basicAuth: []
+  - VendorBearerAuth: []
+tags:
+  - name: Deprecated
+  - name: Promotion Relay V1
+  - name: Promotion Relay V2
+    description: Promotion Account Controller
+  - name: Promotion Relay V3
+paths:
+  /v1:
+    post:
+      tags:
+        - Deprecated
+      summary: Promotion Creation/Update
+      description: |-
+        Create or update a list of promotions. This request is asynchronous and it will be placed upon a queue for a post processor consumption.
+        Deprecated since: Sprint 53 - 01/2021 - BEESCS-4928
+        Removal prevision: undefined
+      operationId: createPromotionsUsingPOST
+      parameters:
+        - name: x-timestamp
+          in: header
+          description: Timestamp generated in the source of truth of the data that will be used for setting precedence of message processing. This count starts at the Unix Epoch on January 1st, 1970 at UTC
+          schema:
+            type: string
+        - name: requestTraceId
+          in: header
+          description: Cross transaction unique ID
+          schema:
+            type: string
+        - name: country
+          in: header
+          description: Country/region. ISO 3166 alpha-2 country code
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: promotionRequest
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Promotion'
+        required: true
+      responses:
+        '202':
+          description: Accepted.
+          content: {}
+        '400':
+          description: The request is invalid.
+          content: {}
+        '401':
+          description: You are not authorized to view the resource.
+          content: {}
+        '503':
+          description: Service Unavailable. This error can be a result of queue infrastructure not available. In this case, nothing will be processed.
+          content: {}
+      deprecated: true
+      x-codegen-request-body-name: promotionRequest
+  /v1/account-group:
+    post:
+      tags:
+        - Deprecated
+      summary: Promotion Account Group Creation/Update
+      description: |-
+        Create or update a list of Account Groups. This request is asynchronous and it will be placed upon a queue for a post processor consumption.
+        Deprecated since: Sprint 53 - 01/2021 - BEESCS-4928
+        Removal prevision: undefined
+      operationId: createAccountGroupPromotionsUsingPOST
+      parameters:
+        - name: x-timestamp
+          in: header
+          description: Timestamp generated in the source of truth of the data that will be used for setting precedence of message processing. This count starts at the Unix Epoch on January 1st, 1970 at UTC
+          schema:
+            type: string
+        - name: requestTraceId
+          in: header
+          description: Cross transaction unique ID
+          schema:
+            type: string
+        - name: country
+          in: header
+          description: Country/region. ISO 3166 alpha-2 country code
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: accountGroupRequest
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/PromotionAccountGroup'
+        required: true
+      responses:
+        '202':
+          description: Accepted.
+          content: {}
+        '400':
+          description: The request is invalid.
+          content: {}
+        '401':
+          description: You are not authorized to view the resource.
+          content: {}
+        '503':
+          description: Service Unavailable. This error can be a result of queue infrastructure not available. In this case, nothing will be processed.
+          content: {}
+      deprecated: true
+      x-codegen-request-body-name: accountGroupRequest
+  /v1/account-group/{accountGroupId}:
+    delete:
+      tags:
+        - Deprecated
+      summary: Delete Promotion Account Group
+      description: |-
+        Delete a informed Promotion Account Group.
+        Deprecated since: Sprint 53 - 01/2021 - BEESCS-4928
+        Removal prevision: undefined
+      operationId: deletePromotionAccountGroupUsingDELETE
+      parameters:
+        - name: accountGroupId
+          in: path
+          description: Promotion Account Group unique identifier
+          required: true
+          schema:
+            type: string
+        - name: x-timestamp
+          in: header
+          description: Timestamp generated in the source of truth of the data that will be used for setting precedence of message processing. This count starts at the Unix Epoch on January 1st, 1970 at UTC
+          schema:
+            type: string
+        - name: requestTraceId
+          in: header
+          description: Cross transaction unique ID
+          schema:
+            type: string
+        - name: country
+          in: header
+          description: Country/region. ISO 3166 alpha-2 country code
+          required: true
+          schema:
+            type: string
+      responses:
+        '202':
+          description: Accepted
+          content: {}
+        '400':
+          description: Bad Request
+          content: {}
+        '403':
+          description: Forbidden
+          content: {}
+        '404':
+          description: Not Found
+          content: {}
+      deprecated: true
+  /v1/accounts/score:
+    put:
+      tags:
+        - Deprecated
+      summary: Promotion Score update by account
+      description: |-
+        Update promotion score for a list of promotions grouped by account. This request is asynchronous and it will be placed upon a queue for a post processor consumption.
+        Deprecated since: Sprint 53 - 01/2021 - BEESCS-4928
+        Removal prevision: undefined
+      operationId: updatePromotionScoreUsingPUT
+      parameters:
+        - name: x-timestamp
+          in: header
+          description: Timestamp generated in the source of truth of the data that will be used for setting precedence of message processing. This count starts at the Unix Epoch on January 1st, 1970 at UTC
+          schema:
+            type: string
+        - name: requestTraceId
+          in: header
+          description: Cross transaction unique ID
+          schema:
+            type: string
+        - name: country
+          in: header
+          description: Country/region. ISO 3166 alpha-2 country code
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: promotionScoreRequest
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/PromotionScoreByAccount'
+        required: true
+      responses:
+        '202':
+          description: Accepted.
+          content: {}
+        '400':
+          description: The request is invalid.
+          content: {}
+        '401':
+          description: You are not authorized to view the resource.
+          content: {}
+        '503':
+          description: Service Unavailable. This error can be a result of queue infrastructure not available. In this case, nothing will be processed.
+          content: {}
+      deprecated: true
+      x-codegen-request-body-name: promotionScoreRequest
+  /v1/free-good-group:
+    post:
+      tags:
+        - Deprecated
+      summary: Promotion Free Good Group Creation/Update
+      description: |-
+        Create or update a list of Free Good Groups. This request is asynchronous and it will be placed upon a queue for a post processor consumption.
+        Deprecated since: Sprint 53 - 01/2021 - BEESCS-4928
+        Removal prevision: undefined
+      operationId: createFreeGoodGroupPromotionsUsingPOST
+      parameters:
+        - name: x-timestamp
+          in: header
+          description: Timestamp generated in the source of truth of the data that will be used for setting precedence of message processing. This count starts at the Unix Epoch on January 1st, 1970 at UTC
+          schema:
+            type: string
+        - name: requestTraceId
+          in: header
+          description: Cross transaction unique ID
+          schema:
+            type: string
+        - name: country
+          in: header
+          description: Country/region. ISO 3166 alpha-2 country code
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: freeGoodGroupRequest
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/PromotionFreeGoodGroup'
+        required: true
+      responses:
+        '202':
+          description: Accepted.
+          content: {}
+        '400':
+          description: The request is invalid.
+          content: {}
+        '401':
+          description: You are not authorized to view the resource.
+          content: {}
+        '503':
+          description: Service Unavailable. This error can be a result of queue infrastructure not available. In this case, nothing will be processed.
+          content: {}
+      deprecated: true
+      x-codegen-request-body-name: freeGoodGroupRequest
+  /v1/free-good-group/{freeGoodGroupId}:
+    delete:
+      tags:
+        - Deprecated
+      summary: Delete Promotion Free Good Group
+      description: |-
+        Delete a informed Promotion Free Good Group.
+        Deprecated since: Sprint 53 - 01/2021 - BEESCS-4928
+        Removal prevision: undefined
+      operationId: deletePromotionFreeGoodGroupUsingDELETE
+      parameters:
+        - name: freeGoodGroupId
+          in: path
+          description: Promotion Free Good Group unique identifier
+          required: true
+          schema:
+            type: string
+        - name: x-timestamp
+          in: header
+          description: Timestamp generated in the source of truth of the data that will be used for setting precedence of message processing. This count starts at the Unix Epoch on January 1st, 1970 at UTC
+          schema:
+            type: string
+        - name: requestTraceId
+          in: header
+          description: Cross transaction unique ID
+          schema:
+            type: string
+        - name: country
+          in: header
+          description: Country/region. ISO 3166 alpha-2 country code
+          required: true
+          schema:
+            type: string
+      responses:
+        '202':
+          description: Accepted
+          content: {}
+        '400':
+          description: Bad Request
+          content: {}
+        '403':
+          description: Forbidden
+          content: {}
+        '404':
+          description: Not Found
+          content: {}
+      deprecated: true
+  /v1/sku-group:
+    post:
+      tags:
+        - Deprecated
+      summary: Promotion Sku Group Creation/Update
+      description: |-
+        Create or update a list of Sku Groups. This request is asynchronous and it will be placed upon a queue for a post processor consumption.
+        Deprecated since: Sprint 53 - 01/2021 - BEESCS-4928
+        Removal prevision: undefined
+      operationId: createSkuGroupPromotionsUsingPOST
+      parameters:
+        - name: x-timestamp
+          in: header
+          description: Timestamp generated in the source of truth of the data that will be used for setting precedence of message processing. This count starts at the Unix Epoch on January 1st, 1970 at UTC
+          schema:
+            type: string
+        - name: requestTraceId
+          in: header
+          description: Cross transaction unique ID
+          schema:
+            type: string
+        - name: country
+          in: header
+          description: Country/region. ISO 3166 alpha-2 country code
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: skuGroupRequest
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/PromotionSkuGroup'
+        required: true
+      responses:
+        '202':
+          description: Accepted.
+          content: {}
+        '400':
+          description: The request is invalid.
+          content: {}
+        '401':
+          description: You are not authorized to view the resource.
+          content: {}
+        '503':
+          description: Service Unavailable. This error can be a result of queue infrastructure not available. In this case, nothing will be processed.
+          content: {}
+      deprecated: true
+      x-codegen-request-body-name: skuGroupRequest
+  /v1/sku-group/{skuGroupId}:
+    delete:
+      tags:
+        - Deprecated
+      summary: Delete Promotion Sku Group
+      description: |-
+        Delete a informed Promotion Sku Group.
+        Deprecated since: Sprint 53 - 01/2021 - BEESCS-4928
+        Removal prevision: undefined
+      operationId: deletePromotionSkuGroupUsingDELETE
+      parameters:
+        - name: skuGroupId
+          in: path
+          description: Promotion Sku Group unique identifier
+          required: true
+          schema:
+            type: string
+        - name: x-timestamp
+          in: header
+          description: Timestamp generated in the source of truth of the data that will be used for setting precedence of message processing. This count starts at the Unix Epoch on January 1st, 1970 at UTC
+          schema:
+            type: string
+        - name: requestTraceId
+          in: header
+          description: Cross transaction unique ID
+          schema:
+            type: string
+        - name: country
+          in: header
+          description: Country/region. ISO 3166 alpha-2 country code
+          required: true
+          schema:
+            type: string
+      responses:
+        '202':
+          description: Accepted
+          content: {}
+        '400':
+          description: Bad Request
+          content: {}
+        '403':
+          description: Forbidden
+          content: {}
+        '404':
+          description: Not Found
+          content: {}
+      deprecated: true
+  /v1/{promotionId}:
+    delete:
+      tags:
+        - Deprecated
+      summary: Promotion Deletion
+      description: |-
+        Deletes a promotion
+        Deprecated since: Sprint 53 - 01/2021 - BEESCS-4928
+        Removal prevision: undefined
+      operationId: deletePromotionUsingDELETE
+      parameters:
+        - name: promotionId
+          in: path
+          description: Promotion unique identifier
+          required: true
+          schema:
+            type: string
+        - name: x-timestamp
+          in: header
+          description: Timestamp generated in the source of truth of the data that will be used for setting precedence of message processing. This count starts at the Unix Epoch on January 1st, 1970 at UTC
+          schema:
+            type: string
+        - name: requestTraceId
+          in: header
+          description: Cross transaction unique ID
+          schema:
+            type: string
+        - name: country
+          in: header
+          description: Country/region. ISO 3166 alpha-2 country code
+          required: true
+          schema:
+            type: string
+      responses:
+        '202':
+          description: Accepted
+          content: {}
+        '400':
+          description: Bad Request
+          content: {}
+        '403':
+          description: Forbidden
+          content: {}
+        '404':
+          description: Not Found
+          content: {}
+      deprecated: true
+  /v2:
+    post:
+      summary: Promotion Creation/Update
+      description: Create or update a list of promotions. This request is asynchronous and it will be placed upon a queue for a post processor consumption.
+      operationId: createPromotionsUsingPOST_1
+      parameters:
+        - name: x-timestamp
+          in: header
+          description: Timestamp generated in the source of truth of the data that will be used for setting precedence of message processing. This count starts at the Unix Epoch on January 1st, 1970 at UTC
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: content-encoding
+          in: header
+          description: Its value indicates which encodings were applied to the entity-body
+          schema:
+            type: string
+        - name: country
+          in: header
+          description: Country/region. ISO 3166 alpha-2 country code
+          required: true
+          schema:
+            type: string
+        - name: requestTraceId
+          in: header
+          description: Cross transaction unique ID
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/PromotionAccount'
+            examples:
+              example-1:
+                value:
+                  - budget: 0
+                    description: Buy 10, get 12 - Buy 12, get 16” or discounts "10% off for all beers".
+                    endDate: '2050-03-31T23:59:59.999Z'
+                    image: https://www.socioscerveceria.com.do/media/catalog/product//b/a/barcelo_dark_series_350_ml_-_unidad_1_botella_dar_siri_.png
+                    promotionId: Becks01
+                    quantityLimit: 10
+                    startDate: '2020-01-01T00:00:00.000Z'
+                    title: Buy 3 get 1 free
+                    type: STEPPED_DISCOUNT
+        required: true
+      responses:
+        '200':
+          description: Ok.
+          content: {}
+        '202':
+          description: Accepted
+          content: {}
+        '400':
+          description: The request is invalid.
+          content: {}
+        '401':
+          description: You are not authorized to view the resource.
+          content: {}
+        '503':
+          description: Service Unavailable. This error can be a result of queue infrastructure not available. In this case, nothing will be processed.
+          content: {}
+      x-codegen-request-body-name: promotionAccountRequest
+    delete:
+      summary: Promotions Accounts Deletion
+      description: Delete promotions x accounts
+      operationId: deletePromotionAccountUsingDELETE
+      parameters:
+        - name: country
+          in: header
+          description: Country/region. ISO 3166 alpha-2 country code
+          required: true
+          schema:
+            type: string
+        - name: x-timestamp
+          in: header
+          description: Timestamp generated in the source of truth of the data that will be used for setting precedence of message processing. This count starts at the Unix Epoch on January 1st, 1970 at UTC
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: requestTraceId
+          in: header
+          description: Cross transaction unique ID
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PromotionDeleteRequest'
+            examples:
+              example-1:
+                value:
+                  accounts:
+                    - string
+                  promotions:
+                    - string
+        required: true
+      responses:
+        '202':
+          description: Accepted
+          content: {}
+        '400':
+          description: The request is invalid.
+          content: {}
+        '401':
+          description: You are not authorized to view the resource.
+          content: {}
+        '403':
+          description: Forbidden
+          content: {}
+        '404':
+          description: Not Found
+          content: {}
+        '503':
+          description: Service Unavailable. This error can be a result of queue infrastructure not available. In this case, nothing will be processed.
+          content: {}
+      x-codegen-request-body-name: promotionDeleteRequest
+    parameters: []
+  /v3/promotions:
+    post:
+      summary: POST /promotions
+      operationId: post-promotions
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              description: ''
+              minItems: 1
+              uniqueItems: true
+              items:
+                $ref: '#/components/schemas/PromotionMultivendor'
+            examples:
+              Default:
+                value:
+                  - vendorPromotionId: P123456789
+                    title: Promotion title!
+                    description: Promotion description.
+                    type: DISCOUNT
+                    startDate: '2019-08-24T14:15:22Z'
+                    endDate: '2019-08-24T14:15:22Z'
+                    image: http://example.com
+                    budget: 10
+                    quantityLimit: 150
+              I18n:
+                value:
+                  - vendorPromotionId: promo12345
+                    title: Promotion title!
+                    description: Promotion description.
+                    type: DISCOUNT
+                    startDate: '2019-08-24T14:15:22Z'
+                    endDate: '2019-08-24T14:15:22Z'
+                    image: http://example.com
+                    budget: 0
+                    quantityLimit: 0
+                    translations:
+                      fr-CA:
+                        title: Promo title for the locale
+                        description: Promo description for the locale
+                        image: Promo image for the locale
+                    defaultLanguage: en-CA
+      description: Create or update a list of promotions. This request is asynchronous and it will be placed upon a queue for a post processor consumption.
+      security:
+        - VendorBearerAuth: []
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: country
+          description: Country/region. ISO 3166 alpha-2 country code
+          required: true
+        - schema:
+            type: string
+          in: header
+          name: x-timestamp
+          description: Timestamp generated in the source of truth of the data that will be used for setting precedence of message processing. This count starts at the Unix Epoch on January 1st, 1970 at UTC
+          required: true
+        - schema:
+            type: string
+          in: header
+          name: requestTraceId
+          description: Cross transaction unique ID
+          required: true
+        - schema:
+            type: string
+            default: application/json
+          in: header
+          name: Content-Type
+      tags:
+        - V3 - Multi-Vendor
+    delete:
+      summary: DELETE /promotions
+      operationId: delete-promotions
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PromotionMultivendorDelete'
+            examples:
+              example-1:
+                value:
+                  vendorPromotionIds:
+                    - B12346
+                  vendorAccountIds:
+                    - '9876543210'
+        description: ''
+      description: Delete promotions by vendorPromotionId and/or vendorAccountId
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: country
+          required: true
+          description: Country/region. ISO 3166 alpha-2 country code
+        - schema:
+            type: string
+          in: header
+          name: x-timestamp
+          required: true
+          description: Timestamp generated in the source of truth of the data that will be used for setting precedence of message processing. This count starts at the Unix Epoch on January 1st, 1970 at UTC
+        - schema:
+            type: string
+          in: header
+          name: requestTraceId
+          required: true
+          description: Cross transaction unique ID
+        - schema:
+            type: string
+            default: application/json
+          in: header
+          name: Content-Type
+      security:
+        - VendorBearerAuth: []
+      tags:
+        - V3 - Multi-Vendor
+    parameters: []
+components:
+  schemas:
+    Promotion:
+      title: Promotion
+      required:
+        - accountGroupIds
+        - budget
+        - description
+        - id
+        - score
+        - skuGroupIds
+        - title
+        - type
+      type: object
+      properties:
+        accountGroupIds:
+          type: array
+          description: The account groups of this promotion. This will link an account group to this promotion. With this information the middleware can identify for which accounts this promotion is available. (this field cannot contain whitespaces)
+          example:
+            - '12345'
+            - '54321'
+          items:
+            type: string
+        budget:
+          type: number
+          description: The promotion budget
+        description:
+          maxLength: 20000
+          minLength: 0
+          type: string
+          description: The complete description of the promotion. It describes the promotion itself, about how the promotion works.
+          example: Buy 10, get 12 - Buy 12, get 16” or discounts "10% off for all beers".
+        endDate:
+          type: string
+          description: Day until which the promotion will become active. Needs to be > than Start date. It should be in UTC timezone. https://en.wikipedia.org/wiki/ISO_8601
+          example: '2019-03-31T23:59:59.999Z'
+        freeGoodGroupIds:
+          type: array
+          description: The free good groups of this promotion. This will link this promotion to the sku’s that will be free goodies when affected by this promotion. This field is required when promotion type is FREE_GOOD or STEPPED_FREE_GOOD. (this field cannot contain whitespaces)
+          example:
+            - '12345'
+            - '54321'
+          items:
+            type: string
+        hidden:
+          type: boolean
+          description: Define if the promotion will be available
+          example: false
+        id:
+          maxLength: 255
+          minLength: 0
+          type: string
+          description: Unique identifier for the promotion. (this field cannot contain whitespaces)
+          example: '1'
+        promotionId:
+          type: string
+          description: Promotion Id. (this field cannot contain whitespaces)
+          example: Becks01
+        promotionsRanking:
+          maximum: 100
+          exclusiveMaximum: false
+          minimum: 1
+          exclusiveMinimum: false
+          type: integer
+          description: The ranking of this promotion. This will link a ranking to this promotion. with this information the middleware can identity the ranking position of this promotion.
+          format: int32
+          example: 100
+        quantityLimit:
+          type: integer
+          description: 'Quantity Limit of freegoods '
+          format: int32
+          example: 2
+        score:
+          type: number
+          description: The promotion score. This decimal value represents a rank value for promotion on sort order
+        skuGroupIds:
+          type: array
+          description: The sku groups of this promotion. This will link this promotion to the sku's affected by this promotion. with this information the middleware can identity with sku's this promotion have.
+          example:
+            - '12345'
+            - '54321'
+          items:
+            type: string
+        startDate:
+          type: string
+          description: Day as of which the promotion will become active. It should be in UTC timezone. https://en.wikipedia.org/wiki/ISO_8601
+          example: '2019-03-04T00:00:00.000Z'
+        title:
+          maxLength: 255
+          minLength: 0
+          type: string
+          description: The promotion title. The label displayed on the promotion list.
+          example: Buy 3 get 1 free
+        type:
+          type: string
+          description: 'The promotion type that can be one of the following: DISCOUNT, FREE_GOOD, STEPPED_DISCOUNT, STEPPED_FREE_GOOD and FLEXIBLE_DISCOUNT.'
+          example: STEPPED_DISCOUNT
+          enum:
+            - STEPPED_DISCOUNT
+            - STEPPED_FREE_GOOD
+            - DISCOUNT
+            - FREE_GOOD
+            - FLEXIBLE_DISCOUNT
+    PromotionAccountGroup:
+      title: PromotionAccountGroup
+      required:
+        - accountGroupId
+        - accounts
+      type: object
+      properties:
+        accountGroupId:
+          maxLength: 255
+          minLength: 0
+          type: string
+          description: The account group ID. This ID will be used to link the account given to a promotion with this account group. (this field cannot contain whitespaces)
+        accounts:
+          type: array
+          description: This field cannot contain whitespaces
+          example:
+            - '11111'
+            - '222222'
+            - '333333'
+          items:
+            type: string
+    PromotionFreeGoodGroup:
+      title: PromotionFreeGoodGroup
+      required:
+        - freeGoodGroupId
+        - skus
+      type: object
+      properties:
+        freeGoodGroupId:
+          maxLength: 255
+          minLength: 0
+          type: string
+          description: The free good group ID. This ID will be used to link the sku to be available as a free good to a promotion with this free good group. (This field cannot contain whitespaces)
+        skus:
+          type: array
+          example:
+            - SKU001
+            - SKU002
+            - SKU003
+          items:
+            type: string
+    PromotionScore:
+      title: PromotionScore
+      required:
+        - promotionId
+        - score
+      type: object
+      properties:
+        promotionId:
+          maxLength: 255
+          minLength: 0
+          type: string
+          description: Promotion ID. (This field cannot contain whitespaces)
+        score:
+          type: number
+          description: The promotion score, integer value that represents a rank value for sorting.
+    PromotionScoreByAccount:
+      title: PromotionScoreByAccount
+      required:
+        - accountId
+        - promotions
+      type: object
+      properties:
+        accountId:
+          maxLength: 255
+          minLength: 0
+          type: string
+          description: The account ID. This ID will be used to link the promotion score with a specific account. (This field cannot contain whitespaces)
+        promotions:
+          type: array
+          description: The list of promotion score. This will link the account id to those promotions.
+          items:
+            $ref: '#/components/schemas/PromotionScore'
+    PromotionSkuGroup:
+      title: PromotionSkuGroup
+      required:
+        - skuGroupId
+        - skus
+      type: object
+      properties:
+        skuGroupId:
+          maxLength: 255
+          minLength: 0
+          type: string
+          description: The sku group ID. This ID will be used to link the sku provided to a promotion with this sku group. (This field cannot contain whitespaces)
+        skus:
+          type: array
+          example:
+            - SKU001
+            - SKU002
+            - SKU003
+          items:
+            type: string
+    PromotionAccount:
+      title: PromotionAccount
+      required:
+        - startDate
+        - title
+        - type
+      type: object
+      properties:
+        budget:
+          minimum: 0
+          exclusiveMinimum: false
+          type: number
+          description: The promotion budget.
+        description:
+          maxLength: 20000
+          minLength: 0
+          type: string
+          description: The complete description of the promotion. It describes the promotion itself, about how the promotion works.
+          example: Buy 10, get 12 - Buy 12, get 16” or discounts "10% off for all beers".
+        endDate:
+          type: string
+          description: Promotion deactivation date. Needs to be > than startDate. It should be in UTC timezone. https://en.wikipedia.org/wiki/ISO_8601
+          example: '2050-03-31T23:59:59.999Z'
+        image:
+          type: string
+          description: Image used as background of the promotion.
+          example: https://www.socioscerveceria.com.do/media/catalog/product//b/a/barcelo_dark_series_350_ml_-_unidad_1_botella_dar_siri_.png
+        promotionId:
+          type: string
+          description: Unique identifier for the promotion. Required. (This field cannot contain whitespaces)
+          example: Becks01
+        quantityLimit:
+          minimum: 1
+          exclusiveMinimum: false
+          type: integer
+          description: The promotion quantity limit.
+          format: int32
+          example: 10
+        startDate:
+          type: string
+          description: Promotion activation date. It should be in UTC timezone. https://en.wikipedia.org/wiki/ISO_8601
+          example: '2020-01-01T00:00:00.000Z'
+        title:
+          maxLength: 255
+          minLength: 1
+          type: string
+          description: The promotion title. The label displayed on the promotion list.
+          example: Buy 3 get 1 free
+        type:
+          type: string
+          description: 'The promotion type that can be one of the following: DISCOUNT, FREE_GOOD, STEPPED_DISCOUNT, STEPPED_FREE_GOOD and FLEXIBLE_DISCOUNT.'
+          example: STEPPED_DISCOUNT
+          enum:
+            - STEPPED_DISCOUNT
+            - STEPPED_FREE_GOOD
+            - DISCOUNT
+            - FREE_GOOD
+            - FLEXIBLE_DISCOUNT
+    PromotionDeleteRequest:
+      title: PromotionDeleteRequest
+      type: object
+      x-examples:
+        example-1:
+          accounts:
+            - string
+          promotions:
+            - string
+      properties:
+        accounts:
+          type: array
+          description: AccountId list. (This field cannot contain whitespaces)
+          deprecated: true
+          items:
+            type: string
+        promotions:
+          type: array
+          description: PromotionId list. (This field cannot contain whitespaces)
+          items:
+            type: string
+      required:
+        - promotions
+    PromotionMultivendor:
+      description: ''
+      type: object
+      x-examples:
+        example-1:
+          value:
+            vendorPromotionId: promo12345
+            title: Promotion title!
+            description: Promotion description.
+            type: DISCOUNT
+            startDate: '2019-08-24T14:15:22Z'
+            endDate: '2019-08-24T14:15:22Z'
+            image: http://example.com
+            budget: 0
+            quantityLimit: 0
+            translations:
+              en_US:
+                title: string
+                description: string
+                image: string
+              en_CA:
+                title: string
+                description: string
+                image: string
+      title: PromotionMultivendor
+      properties:
+        vendorPromotionId:
+          type: string
+          minLength: 1
+          description: Unique identifier for the promotion. (This field cannot contain whitespaces)
+          example: promo12345
+        title:
+          type: string
+          minLength: 1
+          description: The promotion title. The label displayed on the promotion list.
+          example: Promotion title!
+        description:
+          type: string
+          minLength: 1
+          description: The complete description of the promotion. It describes the promotion itself, about how the promotion works.
+          example: Promotion description.
+        type:
+          type: string
+          minLength: 1
+          enum:
+            - DISCOUNT
+            - FREE_GOOD
+            - STEPPED_DISCOUNT
+            - STEPPED_FREE_GOOD and FLEXIBLE_DISCOUNT.
+          description: 'The promotion type that can be one of the following: DISCOUNT, FREE_GOOD, STEPPED_DISCOUNT, STEPPED_FREE_GOOD and FLEXIBLE_DISCOUNT.'
+        startDate:
+          type: string
+          minLength: 1
+          format: date-time
+          description: Promotion activation date. Needs to be < than endDate. It should be in UTC timezone. https://en.wikipedia.org/wiki/ISO_8601
+        endDate:
+          type: string
+          minLength: 1
+          format: date-time
+          description: Promotion deactivation date. Needs to be > than startDate. It should be in UTC timezone. https://en.wikipedia.org/wiki/ISO_8601
+        image:
+          type: string
+          minLength: 1
+          format: uri
+          description: Image used as background of the promotion.
+        budget:
+          type: number
+          description: The promotion budget.
+        quantityLimit:
+          type: number
+          description: The promotion quantity limit.
+        translations:
+          $ref: '#/components/schemas/Localization'
+        defaultLanguage:
+          type: string
+          description: Indicate the default language used to send the main data. It must be the locale standard (language-COUNTRY). More details about the locale on https://www.oracle.com/java/technologies/javase/jdk11-supported-locales.html
+          example: en-CA
+      required:
+        - vendorPromotionId
+        - title
+        - type
+        - startDate
+        - endDate
+    PromotionMultivendorDelete:
+      description: ''
+      type: object
+      x-examples:
+        example-1:
+          value:
+            vendorPromotionIds:
+              - string
+            vendorAccountIds:
+              - string
+      title: PromotionMultivendorDelete
+      properties:
+        vendorPromotionIds:
+          type: array
+          description: Vendor promotion id list. (This field cannot contain whitespaces)
+          items:
+            type: string
+            example: B12346
+        vendorAccountIds:
+          type: array
+          description: Vendor Account Id list. (This field cannot contain whitespaces)
+          deprecated: true
+          items:
+            type: string
+            example: '9876543210'
+      required:
+        - vendorPromotionIds
+    Localization:
+      description: The translations for title, description and image. The key must be the locale (language-COUNTRY). More details about the locale on https://www.oracle.com/java/technologies/javase/jdk11-suported-locales.html
+      type: object
+      x-examples:
+        example-1:
+          value:
+            en-US:
+              title: Promo title for en-US
+              description: Promo description for en-US
+              image: Promo image for en-US
+            pr-BR:
+              title: Promo title for pt-BR
+              description: Promo description for pt-BR
+              image: Promo image for pt-BR
+      title: ''
+      properties:
+        '[locale]':
+          type: object
+          description: ''
+          properties:
+            title:
+              type: string
+              minLength: 1
+              description: ''
+              example: Promo title for the locale
+            description:
+              type: string
+              minLength: 1
+              description: ''
+              example: Promo description for the locale
+            image:
+              type: string
+              minLength: 1
+              example: Promo image for the locale
+          required:
+            - title
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    VendorBearerAuth:
+      type: http
+      scheme: bearer
+      description: Authorization code, vendorId information is mandatory inside the claims

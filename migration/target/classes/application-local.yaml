@@ -1,0 +1,18 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass&directConnection=true&ssl=false
+      database: Promotion
+migration:
+  page-size: 10
+  threads-amount: 10
+  total-of-elements: 1062
+  node: 1
+  nodePool: 1
+  country: AR
+  platform-id:
+    enabled: true
+server:
+  tomcat:
+    threads:
+      max: 2

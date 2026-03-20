@@ -1,0 +1,268 @@
+server:
+  port: 8080
+
+management:
+  endpoints:
+    web:
+      exposure:
+        enabled-by-default: false
+  health:
+    rabbit:
+      enabled: true
+    mongo:
+      enabled: true
+    probes:
+      enabled: true
+    livenessState:
+      enabled: true
+    readinessState:
+      enabled: true
+  endpoint:
+    health:
+      show-components: never
+      show-details: never
+      enabled: true
+      probes:
+        enabled: true
+      group:
+        liveness:
+          include: livenessState, mongo, rabbit
+        readiness:
+          include: readinessState, mongo, rabbit
+
+log:
+  appender: ${LOG_APPENDER}
+  
+logging:
+  level:
+    ROOT: ${LOG_ROOT_LEVEL:INFO}
+  newRelic:
+    appender:
+      enabled: ${NEW_RELIC_APPENDER_ENABLED:true}
+
+spring:
+  application:
+    name: promotion-consumer
+  data:
+    mongodb:
+      uri: ${ATLAS_DB_CONNECTION}
+      database: ${ATLAS_DB_DATABASE:Promotion}
+  kafka:
+    feedBackTopic: ${KAFKA_FEEDBACK_LAYER_TOPIC:feedback-layer}
+    feedBackPartitions: ${KAFKA_FEEDBACK_LAYER_TOPIC_PARTITIONS:3}
+  feedback:
+    layer:
+      cache:
+        heapSize: ${FEEDBACK_LAYER_HEAP_SIZE:2000}
+        ttlSeconds: ${FEEDBACK_LAYER_TTL_SEC:60}
+      countries: ${FEEDBACK_LAYER_SUPPORTED_COUNTRIES:}
+
+rabbitmq:
+  promotions:
+    host: ${RABBIT_MQ_HOST}
+    port: ${RABBIT_MQ_PORT}
+    username: ${RABBIT_MQ_USER_NAME}
+    password: ${RABBIT_MQ_PASSWORD}
+    virtual-host: ${RABBIT_MQ_VIRTUAL_HOST}
+    ssl:
+      enabled: ${RABBITMQ_PROMOTIONS_SSL_ENABLED}
+      algorithm: ${RABBITMQ_PROMOTIONS_SSL_VERSION}
+      verify-hostname: false
+    listener:
+      simple:
+        concurrency: ${RABBIT_MQ_LISTENER_CONCURRENCY}
+        max-concurrency: ${RABBIT_MQ_LISTENER_MAX_CONCURRENCY}
+        default-requeue-rejected: false
+        auto-startup: false
+        prefetch: ${RABBIT_MQ_LISTENER_PREFETCH}
+        retry:
+          enabled: true
+          initial-interval: 5000 #5 seconds
+          max-attempts: ${RABBIT_MQ_LISTENER_RETRY_MAX_ATTEMPTS}
+          max-interval: 5000 #5 seconds
+          multiplier: 1
+
+database:
+  promotion: -Promotions
+
+message:
+  promotion:
+    exchange: promotion.exchange
+    queues:
+      aq:
+        queueName: promotion-aq
+        routingKey: aq
+      ar:
+        queueName: promotion-ar
+        routingKey: ar
+      be:
+        queueName: promotion-be
+        routingKey: be
+      bo:
+        queueName: promotion-bo
+        routingKey: bo
+      br:
+        queueName: promotion-br
+        routingKey: br
+      ca:
+        queueName: promotion-ca
+        routingKey: ca
+      cl:
+        queueName: promotion-cl
+        routingKey: cl
+      co:
+        queueName: promotion-co
+        routingKey: co
+      do:
+        queueName: promotion-do
+        routingKey: do
+      ec:
+        queueName: promotion-ec
+        routingKey: ec
+      mx:
+        queueName: promotion-mx
+        routingKey: mx
+      nl:
+        queueName: promotion-nl
+        routingKey: nl
+      pa:
+        queueName: promotion-pa
+        routingKey: pa
+      pe:
+        queueName: promotion-pe
+        routingKey: pe
+      py:
+        queueName: promotion-py
+        routingKey: py
+      sv:
+        queueName: promotion-sv
+        routingKey: sv
+      tz:
+        queueName: promotion-tz
+        routingKey: tz
+      uy:
+        queueName: promotion-uy
+        routingKey: uy
+      za:
+        queueName: promotion-za
+        routingKey: za
+  promotion-multi-vendor:
+    exchange: promotion-multi-vendor.exchange
+    queues:
+      aq:
+        queueName: promotion-multi-vendor-aq
+        routingKey: aq
+      ar:
+        queueName: promotion-multi-vendor-ar
+        routingKey: ar
+      be:
+        queueName: promotion-multi-vendor-be
+        routingKey: be
+      bo:
+        queueName: promotion-multi-vendor-bo
+        routingKey: bo
+      br:
+        queueName: promotion-multi-vendor-br
+        routingKey: br
+      ca:
+        queueName: promotion-multi-vendor-ca
+        routingKey: ca
+      cl:
+        queueName: promotion-multi-vendor-cl
+        routingKey: cl
+      co:
+        queueName: promotion-multi-vendor-co
+        routingKey: co
+      de:
+        queueName: promotion-multi-vendor-de
+        routingKey: de
+      do:
+        queueName: promotion-multi-vendor-do
+        routingKey: do
+      ec:
+        queueName: promotion-multi-vendor-ec
+        routingKey: ec
+      es:
+        queueName: promotion-multi-vendor-es
+        routingKey: es
+      gb:
+        queueName: promotion-multi-vendor-gb
+        routingKey: gb
+      hn:
+        queueName: promotion-multi-vendor-hn
+        routingKey: hn
+      id:
+        queueName: promotion-multi-vendor-id
+        routingKey: id
+      mx:
+        queueName: promotion-multi-vendor-mx
+        routingKey: mx
+      nl:
+        queueName: promotion-multi-vendor-nl
+        routingKey: nl
+      pa:
+        queueName: promotion-multi-vendor-pa
+        routingKey: pa
+      pe:
+        queueName: promotion-multi-vendor-pe
+        routingKey: pe
+      ph:
+        queueName: promotion-multi-vendor-ph
+        routingKey: ph
+      py:
+        queueName: promotion-multi-vendor-py
+        routingKey: py
+      sv:
+        queueName: promotion-multi-vendor-sv
+        routingKey: sv
+      th:
+        queueName: promotion-multi-vendor-th
+        routingKey: th
+      tz:
+        queueName: promotion-multi-vendor-tz
+        routingKey: tz
+      us:
+        queueName: promotion-multi-vendor-us
+        routingKey: us
+      uy:
+        queueName: promotion-multi-vendor-uy
+        routingKey: uy
+      za:
+        queueName: promotion-multi-vendor-za
+        routingKey: za
+  bees-sync-integration:
+    exchange: ${BEES_SYNC_INTEGRATION_EXCHANGE:bees-sync-promotions}
+    enabled-countries: ${BEES_SYNC_INTEGRATION_ENABLED_COUNTRIES:aq, ar, be, bo, br, ca, cl, co, de, do, ec, es, gb, hn, id, mx, nl, pa, pe, ph, py, sv, th, tz, us, uy, za}
+    post:
+      queue-name: ${BEES_SYNC_INTEGRATION_QUEUE_POST:sync_promotion_personalization_updated_queue}
+    delete:
+      queue-name: ${BEES_SYNC_INTEGRATION_QUEUE_DELETE:sync_promotion_personalization_deleted_queue}
+
+jwt:
+  secret: ${JWT_SECRET:MjA3MzVkMzEtNDZiNS00MTFkLWFmMDItNDc4OTdhMDFjMGM5}
+
+promotion:
+  split: ${PROMOTION_SPLIT}
+
+zones:
+  activated: ${ZONES_ACTIVATED:}
+  deactivated: ${ZONES_DEACTIVATED:}
+
+feedback-layer-eventhub-properties:
+  enabled: ${EVENTHUB_ENABLED:false}
+  kafkaProperties:
+    bootstrap-servers: ${EVENTHUB_HOSTNAME:localhost}:9093
+    properties:
+      auto.create.topics.enable: false
+      batch.size: 65536
+      linger.ms: 100
+      retries: 3
+      retry.backoff.ms: 1000 #To run locally without issues, it is necessary to remove the following three lines.
+      security.protocol: SASL_SSL
+      sasl.mechanism: PLAIN
+      sasl.jaas.config: org.apache.kafka.common.security.plain.PlainLoginModule required   username='${EVENTHUB_BROKER_USER}' password='${EVENTHUB_BROKER_PASSWORD}';
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring.json.add.type.headers: false

@@ -1,0 +1,26 @@
+db = db.getSiblingDB("Promotion");
+
+db.getCollection('AQ-Promotions').createIndex( { description: "text", title: "text"} );
+db.getCollection('AR-Promotions').createIndex( { description: "text", title: "text"} );
+db.getCollection('BE-Promotions').createIndex( { description: "text", title: "text"} );
+db.getCollection('BR-Promotions').createIndex( { description: "text", title: "text"} );
+db.getCollection('CA-Promotions').createIndex( { description: "text", title: "text"} );
+db.getCollection('CL-Promotions').createIndex( { description: "text", title: "text"} );
+db.getCollection('CO-Promotions').createIndex( { description: "text", title: "text"} );
+db.getCollection('DE-Promotions').createIndex( { description: "text", title: "text"} );
+db.getCollection('DO-Promotions').createIndex( { description: "text", title: "text"} );
+db.getCollection('EC-Promotions').createIndex( { description: "text", title: "text"} );
+db.getCollection('ES-Promotions').createIndex( { description: "text", title: "text"} );
+db.getCollection('GB-Promotions').createIndex( { description: "text", title: "text"} );
+db.getCollection('HN-Promotions').createIndex( { description: "text", title: "text"} );
+db.getCollection('ID-Promotions').createIndex( { description: "text", title: "text"} );
+db.getCollection('MX-Promotions').createIndex( { description: "text", title: "text"} );
+db.getCollection('NL-Promotions').createIndex( { description: "text", title: "text"} );
+db.getCollection('PA-Promotions').createIndex( { description: "text", title: "text"} );
+db.getCollection('PE-Promotions').createIndex( { description: "text", title: "text"} );
+db.getCollection('PY-Promotions').createIndex( { description: "text", title: "text"} );
+db.getCollection('SV-Promotions').createIndex( { description: "text", title: "text"} );
+db.getCollection('TZ-Promotions').createIndex( { description: "text", title: "text"} );
+db.getCollection('UG-Promotions').createIndex( { description: "text", title: "text"} );
+db.getCollection('UY-Promotions').createIndex( { description: "text", title: "text"} );
+db.getCollection('ZA-Promotions').createIndex( { description: "text", title: "text"} );

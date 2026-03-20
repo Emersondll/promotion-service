@@ -1,0 +1,42 @@
+server:
+  port: 8082
+
+logging:
+  level:
+    ROOT: INFO
+  newRelic:
+    appender:
+      enabled: false
+
+spring:
+  data:
+    mongodb:
+      uri: mongodb://promotion:promotion@localhost:27011
+
+rabbitmq:
+  promotions:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    virtual-host: vhost
+    ssl:
+      enabled: false
+      algorithm: TLSv1.2
+      verify-hostname: false
+    listener:
+      simple:
+        concurrency: 1
+        max-concurrency: 3
+        default-requeue-rejected: false
+        auto-startup: false
+        prefetch: 50
+        retry:
+          max-attempts: 3
+
+promotion:
+  split: 5
+
+zones:
+  activated: ${ZONES_ACTIVATED:aq,br}
+  deactivated:
